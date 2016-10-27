@@ -75,7 +75,6 @@ public class PeopleListModelImp implements PeopleListModelContract {
                 }
             }
         });
-
     }
 
     @Override
