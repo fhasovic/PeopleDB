@@ -15,43 +15,43 @@ public class Person extends RealmObject{
     private String mDob;
     private String mZip;
 
-    public String getmDob() {
+    public String getDob() {
         return mDob;
     }
 
-    public void setmDob(String mDob) {
-        this.mDob = mDob;
+    public void setDob(String dob) {
+        this.mDob = dob;
     }
 
-    public String getmFirstName() {
+    public String getFirstName() {
         return mFirstName;
     }
 
-    public void setmFirstName(String mFirstName) {
-        this.mFirstName = mFirstName;
+    public void setFirstName(String firstName) {
+        this.mFirstName = firstName;
     }
 
-    public String getmLastName() {
+    public String getLastName() {
         return mLastName;
     }
 
-    public void setmLastName(String mLastName) {
-        this.mLastName = mLastName;
+    public void setLastName(String lastName) {
+        this.mLastName = lastName;
     }
 
-    public String getmPhoneNumber() {
+    public String getPhoneNumber() {
         return mPhoneNumber;
     }
 
-    public void setmPhoneNumber(String mPhoneNumber) {
-        this.mPhoneNumber = mPhoneNumber;
+    public void setPhoneNumber(String phoneNumber) {
+        this.mPhoneNumber = phoneNumber;
     }
 
-    public String getmZip() {
+    public String getZip() {
         return mZip;
     }
 
-    public void setmZip(String mZip) {
-        this.mZip = mZip;
+    public void setZip(String zip) {
+        this.mZip = zip;
     }
 }

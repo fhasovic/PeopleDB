@@ -1,6 +1,6 @@
 package me.androidbox.peopledb.peoplelist;
 
-import java.util.Map;
+import me.androidbox.peopledb.model.Person;
 
 /**
  * Created by steve on 10/27/16.
@@ -11,7 +11,7 @@ public interface PeopleListModelContract {
         void onInsertSuccess();
         void onInsertFailure(String errMessage);
     }
-    void insertPersonInto(InsertIntoDBListener insertIntoDBListener);
+    void insertPersonInto(Person person, InsertIntoDBListener insertIntoDBListener);
 
     interface UpdateDBListener {
         void onUpdateSuccess();
@@ -24,4 +24,6 @@ public interface PeopleListModelContract {
         void onDeleteFailure(String errMessage);
     }
     void deletePerson(DeleteListener deleteListener);
+
+    void releaseResources();
 }
