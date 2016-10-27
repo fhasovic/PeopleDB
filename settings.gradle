@@ -1,0 +1,2 @@
+include 'PeopleDB'
+project(':PeopleDB').projectDir = new File('app')
