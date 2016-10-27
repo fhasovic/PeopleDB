@@ -3,6 +3,8 @@ package me.androidbox.peopledb.peoplelist;
 import java.util.UUID;
 
 import io.realm.Realm;
+import io.realm.RealmChangeListener;
+import io.realm.RealmResults;
 import me.androidbox.peopledb.model.Person;
 import timber.log.Timber;
 
@@ -19,7 +21,7 @@ public class PeopleListModelImp implements PeopleListModelContract {
     }
 
     @Override
-    public void deletePerson(DeleteListener deleteListener) {
+    public void deletePerson(final DeleteListener deleteListener) {
 
     }
 
@@ -52,6 +54,27 @@ public class PeopleListModelImp implements PeopleListModelContract {
 
     @Override
     public void updatePerson(UpdateDBListener updateDBListener) {
+
+    }
+
+    @Override
+    public void loadPersons(final LoadPersonListener loadPersonListener) {
+        RealmResults<Person> persons = mRealm.where(Person.class).findAllAsync();
+
+        persons.addChangeListener(new RealmChangeListener<RealmResults<Person>>() {
+
+            @Override
+            public void onChange(RealmResults<Person> persons) {
+                if(!persons.isEmpty()) {
+                    Timber.d("Number of persons: %d", persons.size());
+                    loadPersonListener.onLoadPersonSuccess(persons);
+                }
+                else {
+                    Timber.d("No persons to load");
+                    loadPersonListener.onLoadPersonFailure();
+                }
+            }
+        });
 
     }
 

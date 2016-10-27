@@ -9,11 +9,20 @@ import io.realm.annotations.PrimaryKey;
 
 public class Person extends RealmObject{
     @PrimaryKey
+    private String mId;
     private String mFirstName;
     private String mLastName;
     private String mPhoneNumber;
     private String mDob;
     private String mZip;
+
+    public String getId() {
+        return mId;
+    }
+
+    public void setId(String id) {
+        this.mId = id;
+    }
 
     public String getDob() {
         return mDob;

@@ -1,11 +1,12 @@
 package me.androidbox.peopledb.peoplelist;
 
+import java.util.List;
+
 import me.androidbox.peopledb.model.Person;
 
 /**
  * Created by steve on 10/27/16.
  */
-
 public interface PeopleListModelContract {
     interface InsertIntoDBListener {
         void onInsertSuccess();
@@ -24,6 +25,12 @@ public interface PeopleListModelContract {
         void onDeleteFailure(String errMessage);
     }
     void deletePerson(DeleteListener deleteListener);
+
+    interface LoadPersonListener {
+        void onLoadPersonSuccess(List<Person> personList);
+        void onLoadPersonFailure();
+    }
+    void loadPersons(LoadPersonListener loadPersonListener);
 
     void releaseResources();
 }
