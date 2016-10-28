@@ -21,8 +21,8 @@ public class PeopleListModelImp implements PeopleListModelContract {
     }
 
     @Override
-    public void deletePerson(final DeleteListener deleteListener) {
-
+    public void deletePerson(Person person, final DeleteListener deleteListener) {
+        
     }
 
     @Override
@@ -53,7 +53,7 @@ public class PeopleListModelImp implements PeopleListModelContract {
     }
 
     @Override
-    public void updatePerson(UpdateDBListener updateDBListener) {
+    public void updatePerson(Person person, UpdateDBListener updateDBListener) {
 
     }
 

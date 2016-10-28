@@ -18,13 +18,13 @@ public interface PeopleListModelContract {
         void onUpdateSuccess();
         void onUpdateFailure(String errMessage);
     }
-    void updatePerson(UpdateDBListener updateDBListener);
+    void updatePerson(Person person, UpdateDBListener updateDBListener);
 
     interface DeleteListener {
         void onDeleteSuccess();
         void onDeleteFailure(String errMessage);
     }
-    void deletePerson(DeleteListener deleteListener);
+    void deletePerson(Person person, DeleteListener deleteListener);
 
     interface LoadPersonListener {
         void onLoadPersonSuccess(List<Person> personList);
