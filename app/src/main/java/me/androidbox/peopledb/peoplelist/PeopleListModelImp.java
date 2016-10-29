@@ -21,8 +21,26 @@ public class PeopleListModelImp implements PeopleListModelContract {
     }
 
     @Override
-    public void deletePerson(Person person, final DeleteListener deleteListener) {
-        
+    public void deletePerson(final Person person, final DeleteListener deleteListener) {
+        mRealm.executeTransactionAsync(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                RealmResults<Person> results = realm.where(Person.class).equalTo("mId", person.getId()).findAll();
+                results.deleteFirstFromRealm();
+            }
+        }, new Realm.Transaction.OnSuccess() {
+            @Override
+            public void onSuccess() {
+                Timber.d("onSuccess to delete person");
+                deleteListener.onDeleteSuccess();
+            }
+        }, new Realm.Transaction.OnError() {
+            @Override
+            public void onError(Throwable error) {
+                Timber.d(error, "onError to delete person");
+                deleteListener.onDeleteFailure(error.getMessage());
+            }
+        });
     }
 
     @Override
@@ -53,8 +71,24 @@ public class PeopleListModelImp implements PeopleListModelContract {
     }
 
     @Override
-    public void updatePerson(Person person, UpdateDBListener updateDBListener) {
-
+    public void updatePerson(final Person person, final UpdateDBListener updateDBListener) {
+        mRealm.executeTransactionAsync(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.copyToRealmOrUpdate(person);
+            }
+        }, new Realm.Transaction.OnSuccess() {
+            @Override
+            public void onSuccess() {
+                updateDBListener.onUpdateSuccess();
+            }
+        }, new Realm.Transaction.OnError() {
+            @Override
+            public void onError(Throwable error) {
+                Timber.e(error, "Failed to update person");
+                updateDBListener.onUpdateFailure(error.getMessage());
+            }
+        });
     }
 
     @Override
@@ -80,7 +114,12 @@ public class PeopleListModelImp implements PeopleListModelContract {
     @Override
     public void releaseResources() {
         if(!mRealm.isClosed()) {
+            /* Cancel any pending transactions */
+            if(mRealm.isInTransaction()) {
+                mRealm.commitTransaction();
+            }
             mRealm.close();
         }
     }
 }
+
