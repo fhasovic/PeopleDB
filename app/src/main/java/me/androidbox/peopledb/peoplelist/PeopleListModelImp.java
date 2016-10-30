@@ -1,7 +1,5 @@
 package me.androidbox.peopledb.peoplelist;
 
-import java.util.UUID;
-
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
@@ -18,6 +16,11 @@ public class PeopleListModelImp implements PeopleListModelContract {
 
     public PeopleListModelImp() {
         mRealm = Realm.getDefaultInstance();
+    }
+
+    /* Mock constructor */
+    public PeopleListModelImp(int data) {
+        /* Nothing to do here */
     }
 
     @Override
@@ -111,6 +114,7 @@ public class PeopleListModelImp implements PeopleListModelContract {
         });
     }
 
+    /** Clean up everything to avoid memory leaks */
     @Override
     public void releaseResources() {
         if(!mRealm.isClosed()) {
