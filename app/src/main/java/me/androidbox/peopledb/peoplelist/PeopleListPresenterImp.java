@@ -1,6 +1,7 @@
 package me.androidbox.peopledb.peoplelist;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.inject.Inject;
 
@@ -46,7 +47,14 @@ public class PeopleListPresenterImp implements
 
     @Override
     public void insertPerson() {
+        Person person = new Person();
+        person.setFirstName(mPeopleView.getFirstName());
+        person.setLastName(mPeopleView.getLastName());
+        person.setPhoneNumber(mPeopleView.getPhoneNumber());
+        person.setDob(mPeopleView.getDob());
+        person.setZip(mPeopleView.getZip());
 
+        mPeopleListModel.insertPersonInto(person, PeopleListPresenterImp.this);
     }
 
     @Override
@@ -87,7 +95,7 @@ public class PeopleListPresenterImp implements
     @Override
     public void onLoadPersonSuccess(List<Person> personList) {
         Timber.d("onLoadPersonSuccess");
-        mPeopleView.loadSuccess();
+        mPeopleView.loadSuccess(personList);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package me.androidbox.peopledb.peoplelist;
 
+import java.util.UUID;
+
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
@@ -52,7 +54,7 @@ public class PeopleListModelImp implements PeopleListModelContract {
         mRealm.executeTransactionAsync(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                Person personObject = realm.createObject(Person.class);
+                Person personObject = realm.createObject(Person.class, UUID.randomUUID().toString());
                 personObject.setFirstName(person.getFirstName());
                 personObject.setLastName(person.getLastName());
                 personObject.setDob(person.getDob());
