@@ -1,5 +1,6 @@
 package me.androidbox.peopledb.peoplelist;
 
+import android.app.DatePickerDialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,16 +9,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.androidbox.peopledb.R;
+import timber.log.Timber;
 
 /**
  * Created by steve on 10/31/16.
  */
 
-public class AddPersonDialog extends DialogFragment {
+public class AddPersonDialog extends DialogFragment implements DatePickerDialog.OnDateSetListener {
     public interface AddPersonListener {
         void onAddPerson(String firstname);
     }
@@ -38,13 +44,22 @@ public class AddPersonDialog extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.add_person, container);
+        final View view = inflater.inflate(R.layout.add_person, container);
+        ButterKnife.bind(AddPersonDialog.this, view);
+
+        return view;
+    }
+
+    @OnClick(R.id.etDob)
+    public void enterDate() {
+        DialogFragment newFragment = new DatePicker();
+        newFragment.setTargetFragment(AddPersonDialog.this, 0);
+        newFragment.show(getFragmentManager(), "datepicker");
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.bind(AddPersonDialog.this, view);
     }
 
     @SuppressWarnings("unused")
@@ -53,5 +68,18 @@ public class AddPersonDialog extends DialogFragment {
         AddPersonListener listener = (AddPersonListener)getTargetFragment();
         listener.onAddPerson("Steve Mason");
         dismiss();
+    }
+
+    @Override
+    public void onDateSet(android.widget.DatePicker datePicker, int year, int month, int day) {
+        final Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.DAY_OF_MONTH, day);
+
+        SimpleDateFormat format = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
+        String formattedDate = format.format(calendar.getTime());
+        mEtDob.setText(formattedDate);
+
     }
 }

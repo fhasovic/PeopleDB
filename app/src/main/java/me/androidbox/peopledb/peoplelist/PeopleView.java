@@ -1,5 +1,6 @@
 package me.androidbox.peopledb.peoplelist;
 
+import android.app.DatePickerDialog;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
 import android.app.Fragment;
@@ -12,6 +13,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.*;
+import android.widget.DatePicker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,6 +104,11 @@ public class PeopleView extends Fragment implements
         Timber.d("onAddPerson %s", firstname);
     }
 
+    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+        Timber.d("onDateSet");
+        Toast.makeText(getActivity(), "date set", Toast.LENGTH_SHORT).show();
+    }
+
     @SuppressWarnings("unused")
     @OnClick(R.id.fabAddPerson)
     public void addNewPerson() {
@@ -108,7 +116,7 @@ public class PeopleView extends Fragment implements
         AddPersonDialog addPersonDialog = AddPersonDialog.newInstance();
         addPersonDialog.setTargetFragment(PeopleView.this, 100);
         addPersonDialog.show(fragmentManager, "addpersondialog");
-    }
+   }
 
     @Override
     public void onDestroyView() {
