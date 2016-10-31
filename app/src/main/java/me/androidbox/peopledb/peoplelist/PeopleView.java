@@ -30,7 +30,9 @@ import timber.log.Timber;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PeopleView extends Fragment implements PeopleViewContract {
+public class PeopleView extends Fragment implements
+        PeopleViewContract,
+        AddPersonDialog.AddPersonListener {
 
     @Inject PeopleListPresenterImp mPeopleListPresenter;
     @BindView(R.id.rvPeople) RecyclerView mRvPeople;
@@ -94,10 +96,18 @@ public class PeopleView extends Fragment implements PeopleViewContract {
         }
     }
 
+    @Override
+    public void onAddPerson(String firstname) {
+        Timber.d("onAddPerson %s", firstname);
+    }
+
     @SuppressWarnings("unused")
     @OnClick(R.id.fabAddPerson)
     public void addNewPerson() {
-        
+        android.app.FragmentManager fragmentManager = getFragmentManager();
+        AddPersonDialog addPersonDialog = AddPersonDialog.newInstance();
+        addPersonDialog.setTargetFragment(PeopleView.this, 100);
+        addPersonDialog.show(fragmentManager, "addpersondialog");
     }
 
     @Override
