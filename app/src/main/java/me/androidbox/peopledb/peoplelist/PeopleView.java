@@ -1,14 +1,17 @@
 package me.androidbox.peopledb.peoplelist;
 
-
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentActivity;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetDialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +20,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import me.androidbox.peopledb.R;
 import me.androidbox.peopledb.di.DaggerInjector;
@@ -59,7 +63,7 @@ public class PeopleView extends Fragment implements PeopleViewContract {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        final View view = inflater.inflate(R.layout.add_person, container, false);
+        final View view = inflater.inflate(R.layout.people_view, container, false);
 
         mUnbinder = ButterKnife.bind(PeopleView.this, view);
 
@@ -88,6 +92,12 @@ public class PeopleView extends Fragment implements PeopleViewContract {
 
             //     mPeopleListPresenter.insertPerson();
         }
+    }
+
+    @SuppressWarnings("unused")
+    @OnClick(R.id.fabAddPerson)
+    public void addNewPerson() {
+        
     }
 
     @Override
@@ -166,4 +176,5 @@ public class PeopleView extends Fragment implements PeopleViewContract {
     public String getZip() {
         return "06045";
     }
+
 }
