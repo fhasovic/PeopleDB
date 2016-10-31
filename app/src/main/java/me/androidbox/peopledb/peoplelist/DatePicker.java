@@ -12,9 +12,6 @@ import java.util.Calendar;
  */
 
 public class DatePicker extends DialogFragment  {
-    private DatePickerDialog.OnDateSetListener dateSetListener;
-    DatePickerDialog datePickerDialog;
-
     public DatePicker() {
     }
 
@@ -25,23 +22,7 @@ public class DatePicker extends DialogFragment  {
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        dateSetListener = (DatePickerDialog.OnDateSetListener)getTargetFragment();
-        datePickerDialog = new DatePickerDialog(getActivity(), dateSetListener, year, month, day);
-
-        return datePickerDialog;
-
-        //  return new DatePickerDialog(getActivity(), DatePicker.this, year, month, day);
+        final DatePickerDialog.OnDateSetListener dateSetListener = (DatePickerDialog.OnDateSetListener)getTargetFragment();
+        return new DatePickerDialog(getActivity(), dateSetListener, year, month, day);
     }
-
-    /*@Override
-    public void onDateSet(android.widget.DatePicker datePicker, int year, int month, int dayOfMonth) {
-        final Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.YEAR, year);
-        calendar.set(Calendar.MONTH, month);
-        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-
-        SimpleDateFormat format = new SimpleDateFormat("ddMMMyyyy", Locale.getDefault());
-        String formattedDate = format.format(calendar.getTime());
-        ((EditText)getActivity().findViewById(R.id.etDob)).setText(formattedDate);
-    }*/
 }

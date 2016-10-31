@@ -19,8 +19,8 @@
         android:hint="last name"
         android:textSize="18sp"/>
 
-    <EditText
-        android:id="@+id/etDob"
+    <TextView
+        android:id="@+id/tvDob"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Date of birth"
@@ -46,6 +46,4 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Submit"/>
-
-
 </LinearLayout>

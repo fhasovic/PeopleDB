@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -17,7 +18,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.androidbox.peopledb.R;
-import timber.log.Timber;
 
 /**
  * Created by steve on 10/31/16.
@@ -30,7 +30,7 @@ public class AddPersonDialog extends DialogFragment implements DatePickerDialog.
 
     @BindView(R.id.etFirstName) EditText mEtFirstName;
     @BindView(R.id.etLastName) EditText mEtLastName;
-    @BindView(R.id.etDob) EditText mEtDob;
+    @BindView(R.id.tvDob) TextView mTvDob;
     @BindView(R.id.etPhoneNumber) EditText mEtPhoneNumber;
 
     public AddPersonDialog() {
@@ -50,7 +50,7 @@ public class AddPersonDialog extends DialogFragment implements DatePickerDialog.
         return view;
     }
 
-    @OnClick(R.id.etDob)
+    @OnClick(R.id.tvDob)
     public void enterDate() {
         DialogFragment newFragment = new DatePicker();
         newFragment.setTargetFragment(AddPersonDialog.this, 0);
@@ -79,7 +79,6 @@ public class AddPersonDialog extends DialogFragment implements DatePickerDialog.
 
         SimpleDateFormat format = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
         String formattedDate = format.format(calendar.getTime());
-        mEtDob.setText(formattedDate);
-
+        mTvDob.setText(formattedDate);
     }
 }
