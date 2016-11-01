@@ -48,7 +48,6 @@ public class AddPersonDialog extends DialogFragment implements DatePickerDialog.
         if(getDialog().getWindow() != null) {
             getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         }
-
     }
 
     @Nullable
@@ -96,6 +95,8 @@ public class AddPersonDialog extends DialogFragment implements DatePickerDialog.
         mTvDob.setText("");
         mEtPhoneNumber.setText("");
         mEtZipCode.setText("");
+
+        dismiss();
     }
 
     @Override

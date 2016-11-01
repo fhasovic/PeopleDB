@@ -18,15 +18,20 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.androidbox.peopledb.R;
+import timber.log.Timber;
 
 /**
  * Created by steve on 11/1/16.
  */
 
 public class UpdatePersonDialog extends DialogFragment implements DatePickerDialog.OnDateSetListener {
-    public interface AddPersonListener {
-        void onAddPerson(String firstName, String lastName, String dob, String phoneNumber, String zip);
+    public interface UpdatePersonListener {
+        void onUpdatePerson(String firstName, String lastName, String dob, String phoneNumber, String zip);
     }
+
+    private static final String PERSONUPDATE_KEY = "personupdate_key";
+
+    private String mFirstname;
 
     @BindView(R.id.etFirstName) EditText mEtFirstName;
     @BindView(R.id.etLastName) EditText mEtLastName;
@@ -35,11 +40,15 @@ public class UpdatePersonDialog extends DialogFragment implements DatePickerDial
     @BindView(R.id.etZipCode) EditText mEtZipCode;
 
     public UpdatePersonDialog() {
-
     }
 
-    public static UpdatePersonDialog newInstance() {
-        return new UpdatePersonDialog();
+    public static UpdatePersonDialog newInstance(String firstname) {
+        Bundle bundle = new Bundle();
+        bundle.putString(PERSONUPDATE_KEY, firstname);
+        UpdatePersonDialog updatePersonDialog = new UpdatePersonDialog();
+        updatePersonDialog.setArguments(bundle);
+
+        return updatePersonDialog;
     }
 
     @Override
@@ -53,8 +62,28 @@ public class UpdatePersonDialog extends DialogFragment implements DatePickerDial
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.add_person, container, false);
+        final View view = inflater.inflate(R.layout.update_person, container, false);
         ButterKnife.bind(UpdatePersonDialog.this, view);
+
+        String person;
+     //   Bundle mbundle = getArguments();
+
+        if(getArguments() != null) {
+            Bundle bundle = getArguments();
+            if(bundle != null) {
+                person = bundle.getString(PERSONUPDATE_KEY, "");
+                if (!person.isEmpty()) {
+                    mFirstname = person;
+                    Timber.d("person: %s", person);
+                }
+            }
+            else {
+                Timber.e("Bundle == null");
+            }
+        }
+        else {
+            Timber.e("No bundle - make sure bundle attached");
+        }
 
         /* Cannot disable from touching outside */
         setCancelable(false);
@@ -78,8 +107,8 @@ public class UpdatePersonDialog extends DialogFragment implements DatePickerDial
     @SuppressWarnings("unused")
     @OnClick(R.id.btnSubmit)
     public void sendBackResults() {
-        AddPersonDialog.AddPersonListener listener = (AddPersonDialog.AddPersonListener)getTargetFragment();
-        listener.onAddPerson(
+        UpdatePersonListener listener = (UpdatePersonDialog.UpdatePersonListener)getTargetFragment();
+        listener.onUpdatePerson(
                 mEtFirstName.getText().toString(),
                 mEtLastName.getText().toString(),
                 mEtPhoneNumber.getText().toString(),
@@ -97,6 +126,8 @@ public class UpdatePersonDialog extends DialogFragment implements DatePickerDial
         mTvDob.setText("");
         mEtPhoneNumber.setText("");
         mEtZipCode.setText("");
+
+        dismiss();
     }
 
     @Override

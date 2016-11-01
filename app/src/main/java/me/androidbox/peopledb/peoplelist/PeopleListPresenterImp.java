@@ -1,7 +1,6 @@
 package me.androidbox.peopledb.peoplelist;
 
 import java.util.List;
-import java.util.UUID;
 
 import javax.inject.Inject;
 
@@ -14,13 +13,13 @@ import timber.log.Timber;
  */
 
 public class PeopleListPresenterImp implements
-        PeopleListPresenterContract<PeopleView>,
+        PeopleListPresenterContract<PeopleListView>,
         PeopleListModelContract.DeleteListener,
         PeopleListModelContract.InsertIntoDBListener,
         PeopleListModelContract.LoadPersonListener,
         PeopleListModelContract.UpdateDBListener{
 
-    private PeopleView mPeopleView;
+    private PeopleListView mPeopleView;
 
     @Inject PeopleListModelImp mPeopleListModel;
 
@@ -29,7 +28,7 @@ public class PeopleListPresenterImp implements
     }
 
     @Override
-    public void attachView(PeopleView peopleView) {
+    public void attachView(PeopleListView peopleView) {
         mPeopleView = peopleView;
     }
 
@@ -58,7 +57,7 @@ public class PeopleListPresenterImp implements
     }
 
     @Override
-    public void updatePerson() {
+    public void updatePerson(Person person) {
 
     }
 

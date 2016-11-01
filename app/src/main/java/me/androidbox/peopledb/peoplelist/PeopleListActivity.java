@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import me.androidbox.peopledb.R;
 
-public class PeopleActivity extends AppCompatActivity {
+public class PeopleListActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,7 +15,7 @@ public class PeopleActivity extends AppCompatActivity {
 
         if(savedInstanceState == null) {
             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-            fragmentTransaction.add(R.id.activity_people_container, PeopleView.getNewInstance(), "peopleview");
+            fragmentTransaction.add(R.id.activity_people_container, PeopleListView.getNewInstance(), "peopleview");
             fragmentTransaction.commit();
         }
     }

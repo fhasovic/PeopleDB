@@ -4,5 +4,5 @@
     android:id="@+id/activity_people_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="me.androidbox.peopledb.peoplelist.PeopleActivity">
+    tools:context="me.androidbox.peopledb.peoplelist.PeopleListActivity">
 </FrameLayout>

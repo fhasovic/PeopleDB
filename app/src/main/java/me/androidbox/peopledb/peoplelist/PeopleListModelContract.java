@@ -1,7 +1,6 @@
 package me.androidbox.peopledb.peoplelist;
 
 import java.util.List;
-
 import me.androidbox.peopledb.model.Person;
 
 /**

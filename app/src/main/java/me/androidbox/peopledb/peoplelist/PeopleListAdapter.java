@@ -1,6 +1,5 @@
 package me.androidbox.peopledb.peoplelist;
 
-import android.provider.Contacts;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,11 +22,17 @@ import timber.log.Timber;
  */
 
 public class PeopleListAdapter extends RecyclerView.Adapter<PeopleListAdapter.PeopleViewHolder> {
+    public interface PersonSelectedListener {
+  /*      void onPersonSelected(String firstname, String lastname, String dob, String phoneNumber, String zipCode);*/
+        void onPersonSelected(int position);
+    }
+    private PersonSelectedListener mPersonSelectedListner;
 
-    private List<Person> mPersonList = Collections.emptyList();
+    public List<Person> mPersonList = Collections.emptyList();
 
-    public PeopleListAdapter(List<Person> personList) {
+    public PeopleListAdapter(List<Person> personList, PersonSelectedListener personSelectedListener) {
         mPersonList = new ArrayList<>(personList);
+        mPersonSelectedListner = personSelectedListener;
     }
 
     @Override
@@ -56,6 +61,11 @@ public class PeopleListAdapter extends RecyclerView.Adapter<PeopleListAdapter.Pe
         notifyItemInserted(mPersonList.size() - 1);
     }
 
+    /* Get person from the list */
+    public Person getPerson(int position) {
+        return mPersonList.get(position);
+    }
+
     @Override
     public void onBindViewHolder(PeopleViewHolder holder, int position) {
         holder.mTvFirstName.setText(mPersonList.get(position).getFirstName());
@@ -63,15 +73,22 @@ public class PeopleListAdapter extends RecyclerView.Adapter<PeopleListAdapter.Pe
         holder.mIvThumbnail.setImageResource(R.mipmap.ic_launcher);
     }
 
-    static class PeopleViewHolder extends RecyclerView.ViewHolder {
+    class PeopleViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.ivThumbnail) ImageView mIvThumbnail;
         @BindView(R.id.tvFirstName) TextView mTvFirstName;
         @BindView(R.id.tvLastName) TextView mTvLastName;
 
-        public PeopleViewHolder(View itemView) {
+        public PeopleViewHolder(final View itemView) {
             super(itemView);
 
             ButterKnife.bind(PeopleViewHolder.this, itemView);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mPersonSelectedListner.onPersonSelected(getAdapterPosition());
+                }
+            });
         }
     }
 }

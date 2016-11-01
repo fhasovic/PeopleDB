@@ -85,6 +85,7 @@ public class PeopleListModelImp implements PeopleListModelContract {
         }, new Realm.Transaction.OnSuccess() {
             @Override
             public void onSuccess() {
+                Timber.d("updatePerson onSuccess");
                 updateDBListener.onUpdateSuccess();
             }
         }, new Realm.Transaction.OnError() {

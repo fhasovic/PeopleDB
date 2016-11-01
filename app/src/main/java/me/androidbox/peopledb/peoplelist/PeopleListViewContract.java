@@ -8,7 +8,7 @@ import me.androidbox.peopledb.model.Person;
  * Created by steve on 10/29/16.
  */
 
-public interface PeopleViewContract {
+public interface PeopleListViewContract {
     /** Presenter <<-- View */
     String getFirstName();
     String getLastName();

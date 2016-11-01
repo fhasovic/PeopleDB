@@ -1,20 +1,13 @@
 package me.androidbox.peopledb.peoplelist;
 
-import android.app.DatePickerDialog;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.FragmentActivity;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.BottomSheetDialogFragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
-import android.widget.DatePicker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,11 +26,14 @@ import timber.log.Timber;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PeopleView extends Fragment implements
-        PeopleViewContract,
-        AddPersonDialog.AddPersonListener {
+public class PeopleListView extends Fragment implements
+        PeopleListViewContract,
+        AddPersonDialog.AddPersonListener,
+        UpdatePersonDialog.UpdatePersonListener,
+        PeopleListAdapter.PersonSelectedListener {
 
     @Inject PeopleListPresenterImp mPeopleListPresenter;
+
     @BindView(R.id.rvPeople) RecyclerView mRvPeople;
 
     private PeopleListAdapter mPeoplistAdapter;
@@ -48,12 +44,12 @@ public class PeopleView extends Fragment implements
     private String mPhoneNumber;
     private String mZip;
 
-    public PeopleView() {
+    public PeopleListView() {
         // Required empty public constructor
     }
 
-    public static PeopleView getNewInstance() {
-        return new PeopleView();
+    public static PeopleListView getNewInstance() {
+        return new PeopleListView();
     }
 
     @Override
@@ -75,7 +71,7 @@ public class PeopleView extends Fragment implements
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.people_view, container, false);
 
-        mUnbinder = ButterKnife.bind(PeopleView.this, view);
+        mUnbinder = ButterKnife.bind(PeopleListView.this, view);
 
         setupRecyclerView();
 
@@ -86,7 +82,7 @@ public class PeopleView extends Fragment implements
     private void setupRecyclerView() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         mRvPeople.setLayoutManager(linearLayoutManager);
-        mPeoplistAdapter = new PeopleListAdapter(new ArrayList<Person>());
+        mPeoplistAdapter = new PeopleListAdapter(new ArrayList<Person>(), PeopleListView.this);
         mRvPeople.setAdapter(mPeoplistAdapter);
     }
 
@@ -94,16 +90,26 @@ public class PeopleView extends Fragment implements
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        DaggerInjector.getAppComponent().inject(PeopleView.this);
+        DaggerInjector.getAppComponent().inject(PeopleListView.this);
         if(mPeopleListPresenter != null) {
             Timber.d("mPeopleListPresenter != null");
-            mPeopleListPresenter.attachView(PeopleView.this);
+            mPeopleListPresenter.attachView(PeopleListView.this);
 
             /* Load from database */
             mPeopleListPresenter.loadPersons();
         }
 
    //     onAddPerson("firstName", "seconname", "4848484", "3383747", "383737");
+    }
+
+    @Override
+    public void onUpdatePerson(String firstName, String lastName, String dob, String phoneNumber, String zip) {
+        Timber.d("onAddPerson %s", firstName);
+        mFirstName = firstName;
+        mLastName = lastName;
+        mDob = dob;
+        mPhoneNumber = phoneNumber;
+        mZip = zip;
     }
 
     @Override
@@ -118,12 +124,25 @@ public class PeopleView extends Fragment implements
         mPeopleListPresenter.insertPerson();
     }
 
+    @Override
+    public void onPersonSelected(int position) {
+        /* Get the person from the list */
+        final Person person = mPeoplistAdapter.getPerson(position);
+        Timber.d("onPersonSelected: %s", person.getFirstName());
+        FragmentManager fragmentManager = getFragmentManager();
+        UpdatePersonDialog updatePersonDialog = UpdatePersonDialog.newInstance("steve mason");
+        updatePersonDialog.setTargetFragment(PeopleListView.this, 0);
+        updatePersonDialog.show(fragmentManager, "updatepersondialog");
+
+    //    mPeopleListPresenter.updatePerson(person);
+    }
+
     @SuppressWarnings("unused")
     @OnClick(R.id.fabAddPerson)
     public void addNewPerson() {
         android.app.FragmentManager fragmentManager = getFragmentManager();
         AddPersonDialog addPersonDialog = AddPersonDialog.newInstance();
-        addPersonDialog.setTargetFragment(PeopleView.this, 100);
+        addPersonDialog.setTargetFragment(PeopleListView.this, 100);
         addPersonDialog.show(fragmentManager, "addpersondialog");
    }
 
@@ -136,7 +155,7 @@ public class PeopleView extends Fragment implements
 
     @Override
     public void deletionFailure() {
-
+        Timber.d("deletionFailure");
     }
 
     @Override
@@ -147,22 +166,22 @@ public class PeopleView extends Fragment implements
 
     @Override
     public void insertionFailure() {
-
+        Timber.d("insertionFailure");
     }
 
     @Override
     public void deletionSuccess() {
-
+        Timber.d("deletionSuccess");
     }
 
     @Override
     public void updateSuccess() {
-
+        Timber.d("updateSuccess");
     }
 
     @Override
     public void updateFailure() {
-
+        Timber.d("updateFailure");
     }
 
     @Override
