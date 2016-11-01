@@ -17,7 +17,7 @@ public interface PeopleViewContract {
     String getZip();
 
     /** Presenter -->> View */
-    void insertionSuccess();
+    void insertionSuccess(Person person);
     void insertionFailure();
     void deletionSuccess();
     void deletionFailure();

@@ -42,6 +42,11 @@ public class PeopleView extends Fragment implements
 
     private PeopleListAdapter mPeoplistAdapter;
     private Unbinder mUnbinder;
+    private String mFirstName;
+    private String mLastName;
+    private String mDob;
+    private String mPhoneNumber;
+    private String mZip;
 
     public PeopleView() {
         // Required empty public constructor
@@ -93,20 +98,24 @@ public class PeopleView extends Fragment implements
         if(mPeopleListPresenter != null) {
             Timber.d("mPeopleListPresenter != null");
             mPeopleListPresenter.attachView(PeopleView.this);
-            mPeopleListPresenter.loadPersons();
 
-            //     mPeopleListPresenter.insertPerson();
+            /* Load from database */
+            mPeopleListPresenter.loadPersons();
         }
+
+   //     onAddPerson("firstName", "seconname", "4848484", "3383747", "383737");
     }
 
     @Override
-    public void onAddPerson(String firstname) {
-        Timber.d("onAddPerson %s", firstname);
-    }
+    public void onAddPerson(String firstName, String lastName, String dob, String phoneNumber, String zip) {
+        Timber.d("onAddPerson %s", firstName);
+        mFirstName = firstName;
+        mLastName = lastName;
+        mDob = dob;
+        mPhoneNumber = phoneNumber;
+        mZip = zip;
 
-    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-        Timber.d("onDateSet");
-        Toast.makeText(getActivity(), "date set", Toast.LENGTH_SHORT).show();
+        mPeopleListPresenter.insertPerson();
     }
 
     @SuppressWarnings("unused")
@@ -122,6 +131,7 @@ public class PeopleView extends Fragment implements
     public void onDestroyView() {
         super.onDestroyView();
         mUnbinder.unbind();
+        mPeopleListPresenter.detachView();
     }
 
     @Override
@@ -130,8 +140,9 @@ public class PeopleView extends Fragment implements
     }
 
     @Override
-    public void insertionSuccess() {
-
+    public void insertionSuccess(Person person) {
+        Timber.d("insertionSuccess");
+        mPeoplistAdapter.loadPerson(person);
     }
 
     @Override
@@ -158,10 +169,10 @@ public class PeopleView extends Fragment implements
     public void loadSuccess(List<Person> personList) {
         Timber.d("loadSuccess: %d", personList.size());
 
-        mPeoplistAdapter.loadPersonData(personList);
+        mPeoplistAdapter.loadAllPersons(personList);
 
-        for(Person firstName : personList) {
-            Timber.d("UUID: %s", firstName.getId());
+        for(Person person : personList) {
+            Timber.d("UUID: %s", person.getFirstName());
         }
     }
 
@@ -172,27 +183,27 @@ public class PeopleView extends Fragment implements
 
     @Override
     public String getDob() {
-        return "23-45-45";
+        return mDob;
     }
 
     @Override
     public String getFirstName() {
-        return "steve";
+        return mFirstName;
     }
 
     @Override
     public String getLastName() {
-        return "mason";
+        return mLastName;
     }
 
     @Override
     public String getPhoneNumber() {
-        return "93837484";
+        return mPhoneNumber;
     }
 
     @Override
     public String getZip() {
-        return "06045";
+        return mZip;
     }
 
 }

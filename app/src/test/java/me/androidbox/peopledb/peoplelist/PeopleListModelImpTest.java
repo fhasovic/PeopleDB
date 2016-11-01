@@ -10,6 +10,7 @@ import java.util.UUID;
 import me.androidbox.peopledb.model.Person;
 
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyObject;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -44,10 +45,10 @@ public class PeopleListModelImpTest {
         mPeopleListModel.insertPersonInto(mPerson, mMockInsertListener);
 
         /* Mock a call for an success */
-        verify(mMockInsertListener, times(1)).onInsertSuccess();
+        verify(mMockInsertListener, times(1)).onInsertSuccess(mPerson);
 
         /* Verify that the calls were called */
-        verify(mMockInsertListener, times(1)).onInsertSuccess();
+        verify(mMockInsertListener, times(1)).onInsertSuccess(mPerson);
         verify(mMockInsertListener, never()).onInsertFailure(anyString());
     }
 
@@ -56,11 +57,11 @@ public class PeopleListModelImpTest {
         mPeopleListModel.insertPersonInto(mPerson, mMockInsertListener);
 
         /* Mock a call for an failure */
-        verify(mMockInsertListener, times(1)).onInsertSuccess();
+        verify(mMockInsertListener, times(1)).onInsertSuccess(mPerson);
 
         /* Verify the the calls were called */
         verify(mMockInsertListener, times(1)).onInsertFailure(anyString());
-        verify(mMockInsertListener, times(0)).onInsertSuccess();
+        verify(mMockInsertListener, times(0)).onInsertSuccess(mPerson);
     }
 
     @After

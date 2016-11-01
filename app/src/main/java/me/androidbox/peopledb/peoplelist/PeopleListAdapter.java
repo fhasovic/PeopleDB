@@ -44,10 +44,16 @@ public class PeopleListAdapter extends RecyclerView.Adapter<PeopleListAdapter.Pe
     }
 
     /** Load fresh data into the adpater */
-    public void loadPersonData(List<Person> persons) {
+    public void loadAllPersons(List<Person> persons) {
         Timber.d("loadPersonData %s", persons);
         mPersonList.addAll(persons);
         notifyDataSetChanged();
+    }
+
+    /** Load person into the adapter */
+    public void loadPerson(Person person) {
+        mPersonList.add(person);
+        notifyItemInserted(mPersonList.size() - 1);
     }
 
     @Override

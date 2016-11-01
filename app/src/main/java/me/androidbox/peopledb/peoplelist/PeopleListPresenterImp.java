@@ -81,9 +81,9 @@ public class PeopleListPresenterImp implements
     }
 
     @Override
-    public void onInsertSuccess() {
+    public void onInsertSuccess(Person person) {
         Timber.d("onInsertSuccess");
-        mPeopleView.insertionSuccess();
+        mPeopleView.insertionSuccess(person);
     }
 
     @Override

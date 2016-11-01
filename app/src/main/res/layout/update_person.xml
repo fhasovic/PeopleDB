@@ -60,7 +60,7 @@
         android:layout_below="@id/etZipCode"
         android:layout_toStartOf="@id/placeHolder"
         android:layout_alignParentStart="true"
-        android:text="Submit"/>
+        android:text="Update"/>
 
     <Button
         android:id="@+id/btnCancel"

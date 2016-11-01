@@ -20,10 +20,10 @@ import butterknife.OnClick;
 import me.androidbox.peopledb.R;
 
 /**
- * Created by steve on 10/31/16.
+ * Created by steve on 11/1/16.
  */
 
-public class AddPersonDialog extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+public class UpdatePersonDialog extends DialogFragment implements DatePickerDialog.OnDateSetListener {
     public interface AddPersonListener {
         void onAddPerson(String firstName, String lastName, String dob, String phoneNumber, String zip);
     }
@@ -34,12 +34,12 @@ public class AddPersonDialog extends DialogFragment implements DatePickerDialog.
     @BindView(R.id.etPhoneNumber) EditText mEtPhoneNumber;
     @BindView(R.id.etZipCode) EditText mEtZipCode;
 
-    public AddPersonDialog() {
+    public UpdatePersonDialog() {
 
     }
 
-    public static AddPersonDialog newInstance() {
-        return new AddPersonDialog();
+    public static UpdatePersonDialog newInstance() {
+        return new UpdatePersonDialog();
     }
 
     @Override
@@ -48,14 +48,13 @@ public class AddPersonDialog extends DialogFragment implements DatePickerDialog.
         if(getDialog().getWindow() != null) {
             getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         }
-
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.add_person, container, false);
-        ButterKnife.bind(AddPersonDialog.this, view);
+        ButterKnife.bind(UpdatePersonDialog.this, view);
 
         /* Cannot disable from touching outside */
         setCancelable(false);
@@ -68,17 +67,18 @@ public class AddPersonDialog extends DialogFragment implements DatePickerDialog.
         super.onViewCreated(view, savedInstanceState);
     }
 
+    @SuppressWarnings("unused")
     @OnClick(R.id.tvDob)
     public void enterDate() {
         DialogFragment newFragment = new DatePicker();
-        newFragment.setTargetFragment(AddPersonDialog.this, 0);
+        newFragment.setTargetFragment(UpdatePersonDialog.this, 0);
         newFragment.show(getFragmentManager(), "datepicker");
     }
 
     @SuppressWarnings("unused")
     @OnClick(R.id.btnSubmit)
     public void sendBackResults() {
-        AddPersonListener listener = (AddPersonListener)getTargetFragment();
+        AddPersonDialog.AddPersonListener listener = (AddPersonDialog.AddPersonListener)getTargetFragment();
         listener.onAddPerson(
                 mEtFirstName.getText().toString(),
                 mEtLastName.getText().toString(),
@@ -89,6 +89,7 @@ public class AddPersonDialog extends DialogFragment implements DatePickerDialog.
         dismiss();
     }
 
+    @SuppressWarnings("unused")
     @OnClick(R.id.btnCancel)
     public void cancel() {
         mEtFirstName.setText("");

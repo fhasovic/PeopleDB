@@ -3,7 +3,6 @@ package me.androidbox.peopledb.peoplelist;
 import java.util.UUID;
 
 import io.realm.Realm;
-import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 import me.androidbox.peopledb.model.Person;
 import timber.log.Timber;
@@ -64,7 +63,8 @@ public class PeopleListModelImp implements PeopleListModelContract {
         }, new Realm.Transaction.OnSuccess() {
             @Override
             public void onSuccess() {
-                insertIntoDBListener.onInsertSuccess();
+                Timber.d("insertPersonInto: onSuccess");
+                insertIntoDBListener.onInsertSuccess(person);
             }
         }, new Realm.Transaction.OnError() {
             @Override
@@ -98,22 +98,24 @@ public class PeopleListModelImp implements PeopleListModelContract {
 
     @Override
     public void loadPersons(final LoadPersonListener loadPersonListener) {
+        if(mRealm.isClosed()) {
+            mRealm = Realm.getDefaultInstance();
+        }
+
         RealmResults<Person> persons = mRealm.where(Person.class).findAllAsync();
+        if(persons.size() > 0) {
+            loadPersonListener.onLoadPersonSuccess(persons);
+        }
+        else {
+            loadPersonListener.onLoadPersonFailure();
+        }
+    }
 
-        persons.addChangeListener(new RealmChangeListener<RealmResults<Person>>() {
-
-            @Override
-            public void onChange(RealmResults<Person> persons) {
-                if(!persons.isEmpty()) {
-                    Timber.d("Number of persons: %d", persons.size());
-                    loadPersonListener.onLoadPersonSuccess(persons);
-                }
-                else {
-                    Timber.d("No persons to load");
-                    loadPersonListener.onLoadPersonFailure();
-                }
-            }
-        });
+    @Override
+    public void initializeResources() {
+        if(mRealm.isClosed()) {
+            mRealm = Realm.getDefaultInstance();
+        }
     }
 
     /** Clean up everything to avoid memory leaks */

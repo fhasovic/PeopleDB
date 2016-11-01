@@ -10,7 +10,7 @@ import me.androidbox.peopledb.model.Person;
 public interface PeopleListModelContract {
     /** Insert a new user into the database */
     interface InsertIntoDBListener {
-        void onInsertSuccess();
+        void onInsertSuccess(Person person);
         void onInsertFailure(String errMessage);
     }
     void insertPersonInto(Person person, InsertIntoDBListener insertIntoDBListener);
@@ -38,4 +38,7 @@ public interface PeopleListModelContract {
 
     /** Release all resource to avoid any memory leaks */
     void releaseResources();
+
+    /** Initialize resources */
+    void initializeResources();
 }
