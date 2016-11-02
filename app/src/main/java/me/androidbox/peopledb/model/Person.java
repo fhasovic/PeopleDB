@@ -1,20 +1,39 @@
 package me.androidbox.peopledb.model;
 
+import org.parceler.Parcel;
+
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by steve on 10/27/16.
  */
-
+@Parcel(analyze = Person.class)
 public class Person extends RealmObject{
     @PrimaryKey
-    private String mId;
-    private String mFirstName;
-    private String mLastName;
-    private String mPhoneNumber;
-    private String mDob;
-    private String mZip;
+    String mId;
+    String mFirstName;
+    String mLastName;
+    String mPhoneNumber;
+    String mDob;
+    String mZip;
+
+    public Person() {
+    }
+
+    public Person(String mDob, String mFirstName, String mId, String mLastName, String mPhoneNumber, String mZip) {
+        this.mDob = mDob;
+        this.mFirstName = mFirstName;
+        this.mId = mId;
+        this.mLastName = mLastName;
+        this.mPhoneNumber = mPhoneNumber;
+        this.mZip = mZip;
+    }
+
+    @Override
+    public boolean isManaged() {
+        return super.isManaged();
+    }
 
     public String getId() {
         return mId;

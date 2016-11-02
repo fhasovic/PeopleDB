@@ -22,6 +22,14 @@ android {
             applicationIdSuffix = ".debug"
         }
     }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
 }
 
 dependencies {
@@ -37,14 +45,20 @@ dependencies {
     /** View Binding */
     compile 'com.jakewharton:butterknife:8.4.0'
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
+
     /** Dependency injection */
     compile 'com.google.dagger:dagger:2.7'
     apt 'com.google.dagger:dagger-compiler:2.7'
     provided 'javax.annotation:jsr250-api:1.0'
+
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:25.0.0'
     compile 'com.android.support:support-v4:25.0.0'
     /** Unit testing */
     compile 'org.mockito:mockito-core:2.2.9'
+
+    /** Utilities */
+    compile 'org.parceler:parceler:1.1.6'
+    apt 'org.parceler:parceler:1.1.1'
 
 }

@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import org.parceler.Parcels;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -18,6 +20,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.androidbox.peopledb.R;
+import me.androidbox.peopledb.model.Person;
 import timber.log.Timber;
 
 /**
@@ -29,7 +32,7 @@ public class UpdatePersonDialog extends DialogFragment implements DatePickerDial
         void onUpdatePerson(String firstName, String lastName, String dob, String phoneNumber, String zip);
     }
 
-    private static final String PERSONUPDATE_KEY = "personupdate_key";
+    public static final String PERSONUPDATE_KEY = "personupdate_key";
 
     private String mFirstname;
 
@@ -42,9 +45,13 @@ public class UpdatePersonDialog extends DialogFragment implements DatePickerDial
     public UpdatePersonDialog() {
     }
 
-    public static UpdatePersonDialog newInstance(String firstname) {
-        Bundle bundle = new Bundle();
-        bundle.putString(PERSONUPDATE_KEY, firstname);
+    /*         String firstname,
+            String lastname,
+            String dob,
+            String phoneNumber,
+            String zipCode*/
+
+    public static UpdatePersonDialog newInstance(Bundle bundle) {
         UpdatePersonDialog updatePersonDialog = new UpdatePersonDialog();
         updatePersonDialog.setArguments(bundle);
 
@@ -65,16 +72,15 @@ public class UpdatePersonDialog extends DialogFragment implements DatePickerDial
         final View view = inflater.inflate(R.layout.update_person, container, false);
         ButterKnife.bind(UpdatePersonDialog.this, view);
 
-        String person;
+        //String person;
      //   Bundle mbundle = getArguments();
 
         if(getArguments() != null) {
             Bundle bundle = getArguments();
             if(bundle != null) {
-                person = bundle.getString(PERSONUPDATE_KEY, "");
-                if (!person.isEmpty()) {
-                    mFirstname = person;
-                    Timber.d("person: %s", person);
+                Person person = Parcels.unwrap(bundle.getParcelable(PERSONUPDATE_KEY));
+                if (person != null) {
+                    Timber.d("person: %s", person.getFirstName());
                 }
             }
             else {

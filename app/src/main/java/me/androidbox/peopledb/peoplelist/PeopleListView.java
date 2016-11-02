@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.parceler.Parcels;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -129,8 +131,11 @@ public class PeopleListView extends Fragment implements
         /* Get the person from the list */
         final Person person = mPeoplistAdapter.getPerson(position);
         Timber.d("onPersonSelected: %s", person.getFirstName());
+
+        Bundle bundle = new Bundle(1);
+        bundle.putParcelable(UpdatePersonDialog.PERSONUPDATE_KEY, Parcels.wrap(person));
         FragmentManager fragmentManager = getFragmentManager();
-        UpdatePersonDialog updatePersonDialog = UpdatePersonDialog.newInstance("steve mason");
+        UpdatePersonDialog updatePersonDialog = UpdatePersonDialog.newInstance(bundle);
         updatePersonDialog.setTargetFragment(PeopleListView.this, 0);
         updatePersonDialog.show(fragmentManager, "updatepersondialog");
 
