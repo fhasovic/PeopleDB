@@ -61,6 +61,13 @@ public class PeopleListAdapter extends RecyclerView.Adapter<PeopleListAdapter.Pe
         notifyItemInserted(mPersonList.size() - 1);
     }
 
+    /** Update an existing person */
+    public void updatePerson(Person person) {
+        final int index = mPersonList.indexOf(person);
+        mPersonList.set(index, person);
+        notifyItemChanged(index);
+    }
+
     /* Get person from the list */
     public Person getPerson(int position) {
         return mPersonList.get(position);

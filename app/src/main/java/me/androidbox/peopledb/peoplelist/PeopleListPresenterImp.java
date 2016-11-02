@@ -57,8 +57,8 @@ public class PeopleListPresenterImp implements
     }
 
     @Override
-    public void updatePerson(Person person) {
-
+    public void updatePerson(final Person person) {
+        mPeopleListModel.updatePerson(person, PeopleListPresenterImp.this);
     }
 
     @Override
@@ -104,9 +104,9 @@ public class PeopleListPresenterImp implements
     }
 
     @Override
-    public void onUpdateSuccess() {
+    public void onUpdateSuccess(Person person) {
         Timber.d("onUpdateSuccess");
-        mPeopleView.updateSuccess();
+        mPeopleView.updateSuccess(person);
     }
 
     @Override

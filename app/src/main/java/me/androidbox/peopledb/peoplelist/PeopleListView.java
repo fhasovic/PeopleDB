@@ -100,18 +100,12 @@ public class PeopleListView extends Fragment implements
             /* Load from database */
             mPeopleListPresenter.loadPersons();
         }
-
-   //     onAddPerson("firstName", "seconname", "4848484", "3383747", "383737");
     }
 
     @Override
-    public void onUpdatePerson(String firstName, String lastName, String dob, String phoneNumber, String zip) {
-        Timber.d("onAddPerson %s", firstName);
-        mFirstName = firstName;
-        mLastName = lastName;
-        mDob = dob;
-        mPhoneNumber = phoneNumber;
-        mZip = zip;
+    public void onUpdatePerson(final Person person) {
+        Timber.d("onUpdatePerson %s", person.getFirstName());
+        mPeopleListPresenter.updatePerson(person);
     }
 
     @Override
@@ -180,8 +174,10 @@ public class PeopleListView extends Fragment implements
     }
 
     @Override
-    public void updateSuccess() {
+    public void updateSuccess(Person person) {
         Timber.d("updateSuccess");
+        /* Add to the adatper */
+        mPeoplistAdapter.updatePerson(person);
     }
 
     @Override

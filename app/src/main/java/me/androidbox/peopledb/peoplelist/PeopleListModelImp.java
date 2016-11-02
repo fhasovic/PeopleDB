@@ -3,6 +3,7 @@ package me.androidbox.peopledb.peoplelist;
 import java.util.UUID;
 
 import io.realm.Realm;
+import io.realm.RealmObject;
 import io.realm.RealmResults;
 import me.androidbox.peopledb.model.Person;
 import timber.log.Timber;
@@ -86,7 +87,7 @@ public class PeopleListModelImp implements PeopleListModelContract {
             @Override
             public void onSuccess() {
                 Timber.d("updatePerson onSuccess");
-                updateDBListener.onUpdateSuccess();
+                updateDBListener.onUpdateSuccess(person);
             }
         }, new Realm.Transaction.OnError() {
             @Override
@@ -103,9 +104,9 @@ public class PeopleListModelImp implements PeopleListModelContract {
             mRealm = Realm.getDefaultInstance();
         }
 
-        RealmResults<Person> persons = mRealm.where(Person.class).findAllAsync();
-        if(persons.size() > 0) {
-            loadPersonListener.onLoadPersonSuccess(persons);
+        RealmResults<Person> personsList = mRealm.where(Person.class).findAllAsync();
+        if(personsList.size() > 0) {
+            loadPersonListener.onLoadPersonSuccess(personsList);
         }
         else {
             loadPersonListener.onLoadPersonFailure();

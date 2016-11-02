@@ -16,7 +16,7 @@ public interface PeopleListModelContract {
 
     /** Update a existing user in a database */
     interface UpdateDBListener {
-        void onUpdateSuccess();
+        void onUpdateSuccess(Person person);
         void onUpdateFailure(String errMessage);
     }
     void updatePerson(Person person, UpdateDBListener updateDBListener);

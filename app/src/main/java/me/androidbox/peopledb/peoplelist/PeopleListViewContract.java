@@ -21,7 +21,7 @@ public interface PeopleListViewContract {
     void insertionFailure();
     void deletionSuccess();
     void deletionFailure();
-    void updateSuccess();
+    void updateSuccess(Person person);
     void updateFailure();
     void loadSuccess(List<Person> personList);
     void loadFailure();

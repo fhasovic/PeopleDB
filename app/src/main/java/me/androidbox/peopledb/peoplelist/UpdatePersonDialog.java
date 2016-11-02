@@ -29,12 +29,11 @@ import timber.log.Timber;
 
 public class UpdatePersonDialog extends DialogFragment implements DatePickerDialog.OnDateSetListener {
     public interface UpdatePersonListener {
-        void onUpdatePerson(String firstName, String lastName, String dob, String phoneNumber, String zip);
+        void onUpdatePerson(Person person);
     }
 
     public static final String PERSONUPDATE_KEY = "personupdate_key";
-
-    private String mFirstname;
+    private Person mPerson;
 
     @BindView(R.id.etFirstName) EditText mEtFirstName;
     @BindView(R.id.etLastName) EditText mEtLastName;
@@ -44,12 +43,6 @@ public class UpdatePersonDialog extends DialogFragment implements DatePickerDial
 
     public UpdatePersonDialog() {
     }
-
-    /*         String firstname,
-            String lastname,
-            String dob,
-            String phoneNumber,
-            String zipCode*/
 
     public static UpdatePersonDialog newInstance(Bundle bundle) {
         UpdatePersonDialog updatePersonDialog = new UpdatePersonDialog();
@@ -72,15 +65,13 @@ public class UpdatePersonDialog extends DialogFragment implements DatePickerDial
         final View view = inflater.inflate(R.layout.update_person, container, false);
         ButterKnife.bind(UpdatePersonDialog.this, view);
 
-        //String person;
-     //   Bundle mbundle = getArguments();
-
         if(getArguments() != null) {
             Bundle bundle = getArguments();
             if(bundle != null) {
-                Person person = Parcels.unwrap(bundle.getParcelable(PERSONUPDATE_KEY));
-                if (person != null) {
-                    Timber.d("person: %s", person.getFirstName());
+                mPerson = Parcels.unwrap(bundle.getParcelable(PERSONUPDATE_KEY));
+                if (mPerson != null) {
+                    Timber.d("person: %s", mPerson.getFirstName());
+                    populatePersonFields();
                 }
             }
             else {
@@ -95,6 +86,24 @@ public class UpdatePersonDialog extends DialogFragment implements DatePickerDial
         setCancelable(false);
 
         return view;
+    }
+
+    /** Populate the fields */
+    private void populatePersonFields() {
+        mEtFirstName.setText(mPerson.getFirstName());
+        mEtLastName.setText(mPerson.getLastName());
+        mTvDob.setText(mPerson.getDob());
+        mEtPhoneNumber.setText(mPerson.getPhoneNumber());
+        mEtZipCode.setText(mPerson.getZip());
+    }
+
+    /** Populate person with updated fields */
+    private void updatePerson() {
+        mPerson.setFirstName(mEtFirstName.getText().toString());
+        mPerson.setLastName(mEtLastName.getText().toString());
+        mPerson.setDob(mTvDob.getText().toString());
+        mPerson.setPhoneNumber(mEtPhoneNumber.getText().toString());
+        mPerson.setZip(mEtZipCode.getText().toString());
     }
 
     @Override
@@ -113,13 +122,9 @@ public class UpdatePersonDialog extends DialogFragment implements DatePickerDial
     @SuppressWarnings("unused")
     @OnClick(R.id.btnSubmit)
     public void sendBackResults() {
+        updatePerson();
         UpdatePersonListener listener = (UpdatePersonDialog.UpdatePersonListener)getTargetFragment();
-        listener.onUpdatePerson(
-                mEtFirstName.getText().toString(),
-                mEtLastName.getText().toString(),
-                mEtPhoneNumber.getText().toString(),
-                mTvDob.getText().toString(),
-                mEtZipCode.getText().toString());
+        listener.onUpdatePerson(mPerson);
 
         dismiss();
     }
