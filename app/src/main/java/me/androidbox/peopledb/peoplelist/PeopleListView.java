@@ -132,8 +132,6 @@ public class PeopleListView extends Fragment implements
         UpdatePersonDialog updatePersonDialog = UpdatePersonDialog.newInstance(bundle);
         updatePersonDialog.setTargetFragment(PeopleListView.this, 0);
         updatePersonDialog.show(fragmentManager, "updatepersondialog");
-
-    //    mPeopleListPresenter.updatePerson(person);
     }
 
     @SuppressWarnings("unused")

@@ -3,7 +3,6 @@ package me.androidbox.peopledb.peoplelist;
 import java.util.UUID;
 
 import io.realm.Realm;
-import io.realm.RealmObject;
 import io.realm.RealmResults;
 import me.androidbox.peopledb.model.Person;
 import timber.log.Timber;
@@ -104,12 +103,12 @@ public class PeopleListModelImp implements PeopleListModelContract {
             mRealm = Realm.getDefaultInstance();
         }
 
-        RealmResults<Person> personsList = mRealm.where(Person.class).findAllAsync();
+        RealmResults<Person> personsList = mRealm.where(Person.class).findAll();
         if(personsList.size() > 0) {
             loadPersonListener.onLoadPersonSuccess(personsList);
         }
         else {
-            loadPersonListener.onLoadPersonFailure();
+            loadPersonListener.onLoadPersonFailure("No items in the database");
         }
     }
 

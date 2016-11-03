@@ -31,7 +31,7 @@ public interface PeopleListModelContract {
     /** Load all users from the database */
     interface LoadPersonListener {
         void onLoadPersonSuccess(List<Person> personList);
-        void onLoadPersonFailure();
+        void onLoadPersonFailure(String errMessage);
     }
     void loadPersons(LoadPersonListener loadPersonListener);
 

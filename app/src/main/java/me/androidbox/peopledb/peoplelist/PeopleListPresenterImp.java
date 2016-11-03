@@ -98,8 +98,8 @@ public class PeopleListPresenterImp implements
     }
 
     @Override
-    public void onLoadPersonFailure() {
-        Timber.e("onLoadPersonFailure");
+    public void onLoadPersonFailure(String errMessage) {
+        Timber.e("onLoadPersonFailure %s", errMessage);
         mPeopleView.loadFailure();
     }
 

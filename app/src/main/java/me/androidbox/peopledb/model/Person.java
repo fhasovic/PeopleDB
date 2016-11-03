@@ -2,14 +2,17 @@ package me.androidbox.peopledb.model;
 
 import org.parceler.Parcel;
 
+import io.realm.PersonRealmProxy;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by steve on 10/27/16.
  */
-@Parcel(analyze = Person.class)
-public class Person extends RealmObject{
+@Parcel(implementations = {PersonRealmProxy.class},
+        value = Parcel.Serialization.BEAN,
+        analyze = {Person.class})
+public class Person extends RealmObject {
     @PrimaryKey
     String mId;
     String mFirstName;
