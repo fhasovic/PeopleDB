@@ -15,5 +15,5 @@ public interface PeopleListPresenterContract<PeopleView> {
     void insertPerson();
     void updatePerson(Person person);
     void loadPersons();
-    void deletePersons();
+    void deletePersons(Person person);
 }

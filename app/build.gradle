@@ -12,6 +12,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled = true
     }
     buildTypes {
         release {
@@ -60,5 +61,4 @@ dependencies {
     /** Utilities */
     compile 'org.parceler:parceler:1.1.6'
     apt 'org.parceler:parceler:1.1.6'
-
 }

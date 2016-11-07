@@ -23,7 +23,7 @@ public interface PeopleListModelContract {
 
     /** Delete an existing person in the database */
     interface DeleteListener {
-        void onDeleteSuccess();
+        void onDeleteSuccess(Person person);
         void onDeleteFailure(String errMessage);
     }
     void deletePerson(Person person, DeleteListener deleteListener);

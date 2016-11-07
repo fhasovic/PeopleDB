@@ -19,7 +19,7 @@ public interface PeopleListViewContract {
     /** Presenter -->> View */
     void insertionSuccess(Person person);
     void insertionFailure();
-    void deletionSuccess();
+    void deletionSuccess(Person person);
     void deletionFailure();
     void updateSuccess(Person person);
     void updateFailure();

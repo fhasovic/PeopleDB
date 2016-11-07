@@ -5,6 +5,7 @@ import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,6 +77,7 @@ public class PeopleListView extends Fragment implements
         mUnbinder = ButterKnife.bind(PeopleListView.this, view);
 
         setupRecyclerView();
+        setupSwipeToDismiss();
 
         return view;
     }
@@ -88,7 +90,28 @@ public class PeopleListView extends Fragment implements
         mRvPeople.setAdapter(mPeoplistAdapter);
     }
 
-    @Override
+    /** Setup swipe to dismiss */
+    private void setupSwipeToDismiss() {
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
+        itemTouchHelper.attachToRecyclerView(mRvPeople);
+    }
+
+    /** Swipe to dismiss items from the list */
+    private ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+        @Override
+        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+            final int index = viewHolder.getAdapterPosition();
+            Timber.d("onSwiped %d", index);
+            final Person person = mPeoplistAdapter.getPerson(index);
+            mPeopleListPresenter.deletePersons(person);
+        }
+    };
+
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
@@ -167,8 +190,9 @@ public class PeopleListView extends Fragment implements
     }
 
     @Override
-    public void deletionSuccess() {
+    public void deletionSuccess(Person person) {
         Timber.d("deletionSuccess");
+        mPeoplistAdapter.removePerson(person);
     }
 
     @Override
@@ -186,7 +210,7 @@ public class PeopleListView extends Fragment implements
     @Override
     public void loadSuccess(List<Person> personList) {
         Timber.d("loadSuccess: %d", personList.size());
-
+        mPeoplistAdapter.clearAdapter();
         mPeoplistAdapter.loadAllPersons(personList);
 
         for(Person person : personList) {

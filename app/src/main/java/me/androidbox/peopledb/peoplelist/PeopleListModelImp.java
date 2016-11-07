@@ -27,16 +27,22 @@ public class PeopleListModelImp implements PeopleListModelContract {
     @Override
     public void deletePerson(final Person person, final DeleteListener deleteListener) {
         mRealm.executeTransactionAsync(new Realm.Transaction() {
+            String id = person.getId();
             @Override
             public void execute(Realm realm) {
-                RealmResults<Person> results = realm.where(Person.class).equalTo("mId", person.getId()).findAll();
-                results.deleteFirstFromRealm();
+                RealmResults<Person> results = realm.where(Person.class).equalTo("mId", id).findAll();
+                if(results.deleteAllFromRealm()) {
+                    Timber.d("deletePerson == true");
+                }
+                else {
+                    Timber.e("deletePerson == false");
+                }
             }
         }, new Realm.Transaction.OnSuccess() {
             @Override
             public void onSuccess() {
                 Timber.d("onSuccess to delete person");
-                deleteListener.onDeleteSuccess();
+                deleteListener.onDeleteSuccess(person);
             }
         }, new Realm.Transaction.OnError() {
             @Override
@@ -122,12 +128,14 @@ public class PeopleListModelImp implements PeopleListModelContract {
     /** Clean up everything to avoid memory leaks */
     @Override
     public void releaseResources() {
+        Timber.d("releaseResources");
         if(!mRealm.isClosed()) {
             /* Cancel any pending transactions */
             if(mRealm.isInTransaction()) {
-                mRealm.commitTransaction();
+                mRealm.cancelTransaction();
             }
             mRealm.close();
+            Timber.d("releaseResources closed");
         }
     }
 }

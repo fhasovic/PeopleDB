@@ -55,6 +55,19 @@ public class PeopleListAdapter extends RecyclerView.Adapter<PeopleListAdapter.Pe
         notifyDataSetChanged();
     }
 
+    /** Get person from the list */
+    public Person getPerson(int position) {
+        final Person person = mPersonList.get(position);
+        return person;
+    }
+
+    /** Clear all elements from adapter */
+    public void clearAdapter() {
+        if(!mPersonList.isEmpty()) {
+            Timber.d("clearAdapter %d to clear out", mPersonList.size());
+            mPersonList.clear();
+        }
+    }
     /** Load person into the adapter */
     public void loadPerson(Person person) {
         mPersonList.add(person);
@@ -68,9 +81,11 @@ public class PeopleListAdapter extends RecyclerView.Adapter<PeopleListAdapter.Pe
         notifyItemChanged(index);
     }
 
-    /* Get person from the list */
-    public Person getPerson(int position) {
-        return mPersonList.get(position);
+    /** void deletePerson */
+    public void removePerson(Person person) {
+        final int index = mPersonList.indexOf(person);
+        mPersonList.remove(person);
+        notifyItemRemoved(index);
     }
 
     @Override

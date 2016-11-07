@@ -40,8 +40,8 @@ public class PeopleListPresenterImp implements
 
     /** Model <<-- Presenter */
     @Override
-    public void deletePersons() {
-
+    public void deletePersons(Person person) {
+        mPeopleListModel.deletePerson(person, PeopleListPresenterImp.this);
     }
 
     @Override
@@ -74,9 +74,9 @@ public class PeopleListPresenterImp implements
     }
 
     @Override
-    public void onDeleteSuccess() {
+    public void onDeleteSuccess(Person person) {
         Timber.d("onDeleteSuccess");
-        mPeopleView.deletionSuccess();
+        mPeopleView.deletionSuccess(person);
     }
 
     @Override
