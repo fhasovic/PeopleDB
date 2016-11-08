@@ -12,15 +12,14 @@ import android.view.ViewGroup;
 
 import org.parceler.Parcels;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import co.moonmonkeylabs.realmrecyclerview.RealmRecyclerView;
+import io.realm.RealmResults;
 import me.androidbox.peopledb.R;
 import me.androidbox.peopledb.di.DaggerInjector;
 import me.androidbox.peopledb.model.Person;
@@ -37,7 +36,7 @@ public class PeopleListView extends Fragment implements
 
     @Inject PeopleListPresenterImp mPeopleListPresenter;
 
-    @BindView(R.id.rvPeople) RecyclerView mRvPeople;
+    @BindView(R.id.rvPeople) RealmRecyclerView mRvPeople;
 
     private PeopleListAdapter mPeoplistAdapter;
     private Unbinder mUnbinder;
@@ -85,15 +84,16 @@ public class PeopleListView extends Fragment implements
     /** Setup the recycler view and adapter */
     private void setupRecyclerView() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        mRvPeople.setLayoutManager(linearLayoutManager);
-        mPeoplistAdapter = new PeopleListAdapter(new ArrayList<Person>(), PeopleListView.this);
+     //   mRvPeople.setlayout.setlayout.setLayoutManager(linearLayoutManager);
+     //   mPeoplistAdapter = new PeopleListAdapter(new ArrayList<Person>(), PeopleListView.this);
+        //mPeoplistAdapter = new PeopleListAdapter(getActivity(), )
         mRvPeople.setAdapter(mPeoplistAdapter);
     }
 
     /** Setup swipe to dismiss */
     private void setupSwipeToDismiss() {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
-        itemTouchHelper.attachToRecyclerView(mRvPeople);
+ //       itemTouchHelper.attachToRecyclerView(mRvPeople);
     }
 
     /** Swipe to dismiss items from the list */
@@ -208,14 +208,20 @@ public class PeopleListView extends Fragment implements
     }
 
     @Override
-    public void loadSuccess(List<Person> personList) {
+    public void loadSuccess(RealmResults<Person> personList) {
         Timber.d("loadSuccess: %d", personList.size());
+
+        mPeoplistAdapter = new PeopleListAdapter(getActivity(), personList, PeopleListView.this);
+        mRvPeople.setAdapter(mPeoplistAdapter);
+/*
+
         mPeoplistAdapter.clearAdapter();
         mPeoplistAdapter.loadAllPersons(personList);
 
         for(Person person : personList) {
             Timber.d("UUID: %s", person.getFirstName());
         }
+*/
     }
 
     @Override

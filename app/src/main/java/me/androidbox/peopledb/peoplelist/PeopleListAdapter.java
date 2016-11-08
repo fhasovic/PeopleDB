@@ -1,18 +1,19 @@
 package me.androidbox.peopledb.peoplelist;
 
-import android.support.v7.widget.RecyclerView;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.realm.RealmBasedRecyclerViewAdapter;
+import io.realm.RealmResults;
+import io.realm.RealmViewHolder;
 import me.androidbox.peopledb.R;
 import me.androidbox.peopledb.model.Person;
 import timber.log.Timber;
@@ -21,96 +22,104 @@ import timber.log.Timber;
  * Created by steve on 10/30/16.
  */
 
-public class PeopleListAdapter extends RecyclerView.Adapter<PeopleListAdapter.PeopleViewHolder> {
+public class PeopleListAdapter extends RealmBasedRecyclerViewAdapter<Person, PeopleListAdapter.PeopleRealmViewHolder> {
     public interface PersonSelectedListener {
-  /*      void onPersonSelected(String firstname, String lastname, String dob, String phoneNumber, String zipCode);*/
-        void onPersonSelected(int position);
+          void onPersonSelected(int position);
     }
     private PersonSelectedListener mPersonSelectedListner;
 
-    public List<Person> mPersonList = Collections.emptyList();
+//    public List<Person> mPersonList = Collections.emptyList();
 
-    public PeopleListAdapter(List<Person> personList, PersonSelectedListener personSelectedListener) {
-        mPersonList = new ArrayList<>(personList);
+    public PeopleListAdapter(Context context, RealmResults<Person> realmResults, PersonSelectedListener personSelectedListener) {
+        super(context, realmResults, false, true);
         mPersonSelectedListner = personSelectedListener;
     }
 
     @Override
     public int getItemCount() {
-        return mPersonList.size();
+        return realmResults.size();
     }
 
-    @Override
-    public PeopleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        final View view = layoutInflater.inflate(R.layout.people_row, parent, false);
-
-        return new PeopleViewHolder(view);
-    }
 
     /** Load fresh data into the adpater */
     public void loadAllPersons(List<Person> persons) {
         Timber.d("loadPersonData %s", persons);
-        mPersonList.addAll(persons);
+  //      realmResults.addAll(persons);
         notifyDataSetChanged();
     }
 
     /** Get person from the list */
     public Person getPerson(int position) {
+/*
         final Person person = mPersonList.get(position);
         return person;
+*/
+        return null;
     }
 
     /** Clear all elements from adapter */
     public void clearAdapter() {
-        if(!mPersonList.isEmpty()) {
+ /*       if(!mPersonList.isEmpty()) {
             Timber.d("clearAdapter %d to clear out", mPersonList.size());
             mPersonList.clear();
-        }
+        }*/
     }
     /** Load person into the adapter */
     public void loadPerson(Person person) {
+/*
         mPersonList.add(person);
         notifyItemInserted(mPersonList.size() - 1);
+*/
     }
 
     /** Update an existing person */
     public void updatePerson(Person person) {
+/*
         final int index = mPersonList.indexOf(person);
         mPersonList.set(index, person);
         notifyItemChanged(index);
+*/
     }
 
     /** void deletePerson */
     public void removePerson(Person person) {
+/*
         final int index = mPersonList.indexOf(person);
         mPersonList.remove(person);
         notifyItemRemoved(index);
+*/
     }
 
     @Override
-    public void onBindViewHolder(PeopleViewHolder holder, int position) {
-        holder.mTvFirstName.setText(mPersonList.get(position).getFirstName());
-        holder.mTvLastName.setText(mPersonList.get(position).getLastName());
+    public void onBindRealmViewHolder(PeopleRealmViewHolder holder, int position) {
+        holder.mTvFirstName.setText(realmResults.get(position).getFirstName());
+        holder.mTvLastName.setText(realmResults.get(position).getLastName());
         holder.mIvThumbnail.setImageResource(R.mipmap.ic_launcher);
     }
 
-    class PeopleViewHolder extends RecyclerView.ViewHolder {
+    @Override
+    public PeopleRealmViewHolder onCreateRealmViewHolder(ViewGroup viewGroup, int i) {
+        LayoutInflater layoutInflater = LayoutInflater.from(viewGroup.getContext());
+        final View view = layoutInflater.inflate(R.layout.people_row, viewGroup, false);
+
+        return new PeopleRealmViewHolder(view);
+    }
+
+    class PeopleRealmViewHolder extends RealmViewHolder implements View.OnClickListener{
         @BindView(R.id.ivThumbnail) ImageView mIvThumbnail;
         @BindView(R.id.tvFirstName) TextView mTvFirstName;
         @BindView(R.id.tvLastName) TextView mTvLastName;
 
-        public PeopleViewHolder(final View itemView) {
-            super(itemView);
+        public PeopleRealmViewHolder(View view) {
+            super(view);
 
-            ButterKnife.bind(PeopleViewHolder.this, itemView);
+            ButterKnife.bind(PeopleRealmViewHolder.this, view);
+            view.setOnClickListener(PeopleRealmViewHolder.this);
+        }
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mPersonSelectedListner.onPersonSelected(getAdapterPosition());
-                }
-            });
+        @Override
+        public void onClick(View view) {
+            mPersonSelectedListner.onPersonSelected(getAdapterPosition());
         }
     }
 }

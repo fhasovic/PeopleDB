@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.realm.RealmResults;
 import me.androidbox.peopledb.di.DaggerInjector;
 import me.androidbox.peopledb.model.Person;
 import timber.log.Timber;
@@ -92,7 +93,7 @@ public class PeopleListPresenterImp implements
     }
 
     @Override
-    public void onLoadPersonSuccess(List<Person> personList) {
+    public void onLoadPersonSuccess(RealmResults<Person> personList) {
         Timber.d("onLoadPersonSuccess");
         mPeopleView.loadSuccess(personList);
     }

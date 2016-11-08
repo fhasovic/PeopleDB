@@ -40,10 +40,21 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+<!--
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvPeople"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+-->
+
+        <co.moonmonkeylabs.realmrecyclerview.RealmRecyclerView
+            android:id="@+id/rvPeople"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:rrvIsRefreshable="true"
+            app:rrvLayoutType="LinearLayout"
+            app:rrvEmptyLayoutId="@layout/empty_items">
+        </co.moonmonkeylabs.realmrecyclerview.RealmRecyclerView>
 
     </android.support.v4.widget.NestedScrollView>
 
