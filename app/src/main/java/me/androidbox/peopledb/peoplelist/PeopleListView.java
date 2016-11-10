@@ -83,11 +83,11 @@ public class PeopleListView extends Fragment implements
 
     /** Setup the recycler view and adapter */
     private void setupRecyclerView() {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+   //     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
      //   mRvPeople.setlayout.setlayout.setLayoutManager(linearLayoutManager);
      //   mPeoplistAdapter = new PeopleListAdapter(new ArrayList<Person>(), PeopleListView.this);
         //mPeoplistAdapter = new PeopleListAdapter(getActivity(), )
-        mRvPeople.setAdapter(mPeoplistAdapter);
+     //   mRvPeople.setAdapter(mPeoplistAdapter);
     }
 
     /** Setup swipe to dismiss */
@@ -181,7 +181,7 @@ public class PeopleListView extends Fragment implements
     @Override
     public void insertionSuccess(Person person) {
         Timber.d("insertionSuccess");
-        mPeoplistAdapter.loadPerson(person);
+//        mPeoplistAdapter.loadPerson(person);
     }
 
     @Override
@@ -192,14 +192,14 @@ public class PeopleListView extends Fragment implements
     @Override
     public void deletionSuccess(Person person) {
         Timber.d("deletionSuccess");
-        mPeoplistAdapter.removePerson(person);
+  //      mPeoplistAdapter.removePerson(person);
     }
 
     @Override
     public void updateSuccess(Person person) {
         Timber.d("updateSuccess");
         /* Add to the adatper */
-        mPeoplistAdapter.updatePerson(person);
+ //       mPeoplistAdapter.updatePerson(person);
     }
 
     @Override
