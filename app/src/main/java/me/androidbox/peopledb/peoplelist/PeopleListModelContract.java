@@ -1,5 +1,7 @@
 package me.androidbox.peopledb.peoplelist;
 
+import java.util.List;
+
 import io.realm.RealmResults;
 import me.androidbox.peopledb.model.Person;
 
@@ -30,7 +32,7 @@ public interface PeopleListModelContract {
 
     /** Load all users from the database */
     interface LoadPersonListener {
-        void onLoadPersonSuccess(RealmResults<Person> personList);
+        void onLoadPersonSuccess(List<Person> personList);
         void onLoadPersonFailure(String errMessage);
     }
     void loadPersons(LoadPersonListener loadPersonListener);

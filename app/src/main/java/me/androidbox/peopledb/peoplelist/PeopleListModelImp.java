@@ -59,12 +59,15 @@ public class PeopleListModelImp implements PeopleListModelContract {
         mRealm.executeTransactionAsync(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                Person personObject = realm.createObject(Person.class, UUID.randomUUID().toString());
+                realm.copyToRealm(person);
+/*
+                personObject.setId(UUID.randomUUID().toString());
                 personObject.setFirstName("steve");
                 personObject.setLastName("mason");
                 personObject.setDob("23 Oct 2015");
                 personObject.setZip("38647");
                 personObject.setPhoneNumber("484737484");
+*/
             }
         }, new Realm.Transaction.OnSuccess() {
             @Override
@@ -106,12 +109,13 @@ public class PeopleListModelImp implements PeopleListModelContract {
     @Override
     public void loadPersons(final LoadPersonListener loadPersonListener) {
         if(mRealm.isClosed()) {
+            Timber.d("loadPersons mRealm is closed");
             mRealm = Realm.getDefaultInstance();
         }
 
         RealmResults<Person> personsList = mRealm.where(Person.class).findAll();
         if(personsList.size() > 0) {
-            loadPersonListener.onLoadPersonSuccess(personsList);
+            loadPersonListener.onLoadPersonSuccess(mRealm.copyFromRealm(personsList));
         }
         else {
             loadPersonListener.onLoadPersonFailure("No items in the database");

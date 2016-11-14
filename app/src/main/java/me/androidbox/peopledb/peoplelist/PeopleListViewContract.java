@@ -1,5 +1,7 @@
 package me.androidbox.peopledb.peoplelist;
 
+import java.util.List;
+
 import io.realm.RealmResults;
 import me.androidbox.peopledb.model.Person;
 
@@ -22,6 +24,6 @@ public interface PeopleListViewContract {
     void deletionFailure();
     void updateSuccess(Person person);
     void updateFailure();
-    void loadSuccess(RealmResults<Person> personList);
+    void loadSuccess(List<Person> personList);
     void loadFailure();
 }
