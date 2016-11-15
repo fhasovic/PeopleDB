@@ -60,14 +60,6 @@ public class PeopleListModelImp implements PeopleListModelContract {
             @Override
             public void execute(Realm realm) {
                 realm.copyToRealm(person);
-/*
-                personObject.setId(UUID.randomUUID().toString());
-                personObject.setFirstName("steve");
-                personObject.setLastName("mason");
-                personObject.setDob("23 Oct 2015");
-                personObject.setZip("38647");
-                personObject.setPhoneNumber("484737484");
-*/
             }
         }, new Realm.Transaction.OnSuccess() {
             @Override

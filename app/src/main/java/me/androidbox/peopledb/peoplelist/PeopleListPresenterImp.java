@@ -5,7 +5,6 @@ import java.util.UUID;
 
 import javax.inject.Inject;
 
-import io.realm.RealmResults;
 import me.androidbox.peopledb.di.DaggerInjector;
 import me.androidbox.peopledb.model.Person;
 import timber.log.Timber;

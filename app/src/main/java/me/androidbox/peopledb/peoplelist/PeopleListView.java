@@ -87,7 +87,7 @@ public class PeopleListView extends Fragment implements
     private void setupRecyclerView() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         mRvPeople.setLayoutManager(linearLayoutManager);
-        mPeoplistAdapter = new PeopleListAdapter(getActivity(), new ArrayList<Person>(), PeopleListView.this);
+        mPeoplistAdapter = new PeopleListAdapter(new ArrayList<Person>(), PeopleListView.this);
         mRvPeople.setAdapter(mPeoplistAdapter);
     }
 
@@ -145,7 +145,7 @@ public class PeopleListView extends Fragment implements
     }
 
     @Override
-    public void onPersonSelected(int position) {
+    public void onUpdatePersonSelected(int position) {
         /* Get the person from the list */
         final Person person = mPeoplistAdapter.getPerson(position);
         Timber.d("onPersonSelected: %s", person.getFirstName());
@@ -156,6 +156,12 @@ public class PeopleListView extends Fragment implements
         UpdatePersonDialog updatePersonDialog = UpdatePersonDialog.newInstance(bundle);
         updatePersonDialog.setTargetFragment(PeopleListView.this, 0);
         updatePersonDialog.show(fragmentManager, "updatepersondialog");
+    }
+
+    @Override
+    public void onDeletePersonSelected(int position) {
+        final Person person = mPeoplistAdapter.getPerson(position);
+        mPeopleListPresenter.deletePersons(person);
     }
 
     @SuppressWarnings("unused")
@@ -193,7 +199,7 @@ public class PeopleListView extends Fragment implements
     @Override
     public void deletionSuccess(Person person) {
         Timber.d("deletionSuccess");
-  //      mPeoplistAdapter.removePerson(person);
+        mPeoplistAdapter.removePerson(person);
     }
 
     @Override
@@ -212,22 +218,13 @@ public class PeopleListView extends Fragment implements
     public void loadSuccess(List<Person> personList) {
         Timber.d("loadSuccess: %d", personList.size());
 
-/*
-        mPeoplistAdapter = new PeopleListAdapter(getActivity(), personList, PeopleListView.this);
-        mRvPeople.setAdapter(mPeoplistAdapter);
-*/
         mPeoplistAdapter.clearAdapter();
         mPeoplistAdapter.loadAllPersons(personList);
-
-        for(Person person : personList) {
-            Timber.d("UUID: %s", person.getFirstName());
-        }
-
     }
 
     @Override
     public void loadFailure() {
-
+        Timber.e("loadFailure");
     }
 
     @Override
