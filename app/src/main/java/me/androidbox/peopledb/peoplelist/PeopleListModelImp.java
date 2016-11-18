@@ -103,14 +103,14 @@ public class PeopleListModelImp implements PeopleListModelContract {
         if(mRealm.isClosed()) {
             Timber.d("loadPersons mRealm is closed");
             mRealm = Realm.getDefaultInstance();
-        }
 
-        RealmResults<Person> personsList = mRealm.where(Person.class).findAll();
-        if(personsList.size() > 0) {
-            loadPersonListener.onLoadPersonSuccess(mRealm.copyFromRealm(personsList));
-        }
-        else {
-            loadPersonListener.onLoadPersonFailure("No items in the database");
+            RealmResults<Person> personsList = mRealm.where(Person.class).findAll();
+            if(personsList.size() > 0) {
+                loadPersonListener.onLoadPersonSuccess(mRealm.copyFromRealm(personsList));
+            }
+            else {
+                loadPersonListener.onLoadPersonFailure("No items in the database");
+            }
         }
     }
 
