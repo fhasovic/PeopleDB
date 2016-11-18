@@ -25,12 +25,12 @@ public class PeopleListAdapter extends  RecyclerView.Adapter<PeopleListAdapter.P
         void onUpdatePersonSelected(int position);
         void onDeletePersonSelected(int position);
     }
-    private PersonSelectedListener mPersonSelectedListner;
+    private PersonSelectedListener mPersonSelectedListener;
 
     public List<Person> mPersonList = Collections.emptyList();
 
     public PeopleListAdapter(List<Person> personList, PersonSelectedListener personSelectedListener) {
-        mPersonSelectedListner = personSelectedListener;
+        mPersonSelectedListener = personSelectedListener;
         mPersonList = personList;
     }
 
@@ -107,12 +107,16 @@ public class PeopleListAdapter extends  RecyclerView.Adapter<PeopleListAdapter.P
 
         @Override
         public void onClick(View view) {
-            mPersonSelectedListner.onUpdatePersonSelected(getAdapterPosition());
+            if(mPersonSelectedListener != null) {
+                mPersonSelectedListener.onUpdatePersonSelected(getAdapterPosition());
+            }
         }
 
         @Override
         public boolean onLongClick(View view) {
-            mPersonSelectedListner.onDeletePersonSelected(getAdapterPosition());
+            if(mPersonSelectedListener != null) {
+                mPersonSelectedListener.onDeletePersonSelected(getAdapterPosition());
+            }
             return true;
         }
     }
