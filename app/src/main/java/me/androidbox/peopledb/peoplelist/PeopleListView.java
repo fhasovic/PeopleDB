@@ -94,7 +94,7 @@ public class PeopleListView extends Fragment implements
     /** Setup swipe to dismiss */
     private void setupSwipeToDismiss() {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
- //       itemTouchHelper.attachToRecyclerView(mRvPeople);
+        itemTouchHelper.attachToRecyclerView(mRvPeople);
     }
 
     /** Swipe to dismiss items from the list */
@@ -146,7 +146,7 @@ public class PeopleListView extends Fragment implements
 
     @Override
     public void onUpdatePersonSelected(int position) {
-        /* Get the person from the list */
+        /* Get the profile from the list */
         final Person person = mPeoplistAdapter.getPerson(position);
         Timber.d("onPersonSelected: %s", person.getFirstName());
 
@@ -189,6 +189,7 @@ public class PeopleListView extends Fragment implements
     public void insertionSuccess(Person person) {
         Timber.d("insertionSuccess");
         mPeoplistAdapter.loadPerson(person);
+        mRvPeople.invalidate();
     }
 
     @Override

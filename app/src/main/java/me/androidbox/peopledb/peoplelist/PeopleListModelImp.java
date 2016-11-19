@@ -41,13 +41,13 @@ public class PeopleListModelImp implements PeopleListModelContract {
         }, new Realm.Transaction.OnSuccess() {
             @Override
             public void onSuccess() {
-                Timber.d("onSuccess to delete person");
+                Timber.d("onSuccess to delete profile");
                 deleteListener.onDeleteSuccess(person);
             }
         }, new Realm.Transaction.OnError() {
             @Override
             public void onError(Throwable error) {
-                Timber.d(error, "onError to delete person");
+                Timber.d(error, "onError to delete profile");
                 deleteListener.onDeleteFailure(error.getMessage());
             }
         });
@@ -92,7 +92,7 @@ public class PeopleListModelImp implements PeopleListModelContract {
         }, new Realm.Transaction.OnError() {
             @Override
             public void onError(Throwable error) {
-                Timber.e(error, "Failed to update person");
+                Timber.e(error, "Failed to update profile");
                 updateDBListener.onUpdateFailure(error.getMessage());
             }
         });
@@ -103,14 +103,14 @@ public class PeopleListModelImp implements PeopleListModelContract {
         if(mRealm.isClosed()) {
             Timber.d("loadPersons mRealm is closed");
             mRealm = Realm.getDefaultInstance();
+        }
 
-            RealmResults<Person> personsList = mRealm.where(Person.class).findAll();
-            if(personsList.size() > 0) {
-                loadPersonListener.onLoadPersonSuccess(mRealm.copyFromRealm(personsList));
-            }
-            else {
-                loadPersonListener.onLoadPersonFailure("No items in the database");
-            }
+        RealmResults<Person> personsList = mRealm.where(Person.class).findAll();
+        if(personsList.size() > 0) {
+            loadPersonListener.onLoadPersonSuccess(mRealm.copyFromRealm(personsList));
+        }
+        else {
+            loadPersonListener.onLoadPersonFailure("No items in the database");
         }
     }
 

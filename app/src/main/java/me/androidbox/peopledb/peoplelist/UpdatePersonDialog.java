@@ -70,7 +70,7 @@ public class UpdatePersonDialog extends DialogFragment implements DatePickerDial
             if(bundle != null) {
                 mPerson = Parcels.unwrap(bundle.getParcelable(PERSONUPDATE_KEY));
                 if (mPerson != null) {
-                    Timber.d("person: %s", mPerson.getFirstName());
+                    Timber.d("profile: %s", mPerson.getFirstName());
                     populatePersonFields();
                 }
             }
@@ -97,7 +97,7 @@ public class UpdatePersonDialog extends DialogFragment implements DatePickerDial
         mEtZipCode.setText(mPerson.getZip());
     }
 
-    /** Populate person with updated fields */
+    /** Populate profile with updated fields */
     private void updatePerson() {
         mPerson.setFirstName(mEtFirstName.getText().toString());
         mPerson.setLastName(mEtLastName.getText().toString());

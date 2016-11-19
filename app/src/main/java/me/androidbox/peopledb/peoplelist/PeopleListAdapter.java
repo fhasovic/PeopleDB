@@ -46,7 +46,7 @@ public class PeopleListAdapter extends  RecyclerView.Adapter<PeopleListAdapter.P
         notifyItemRangeInserted(0, persons.size());
     }
 
-    /** Get person from the list */
+    /** Get profile from the list */
     public Person getPerson(int position) {
         return mPersonList.get(position);
     }
@@ -58,13 +58,13 @@ public class PeopleListAdapter extends  RecyclerView.Adapter<PeopleListAdapter.P
             mPersonList.clear();
         }
     }
-    /** Load person into the adapter */
+    /** Load profile into the adapter */
     public void loadPerson(Person person) {
         mPersonList.add(person);
         notifyItemInserted(mPersonList.size() - 1);
     }
 
-    /** Update an existing person */
+    /** Update an existing profile */
     public void updatePerson(Person person) {
         final int index = mPersonList.indexOf(person);
         mPersonList.set(index, person);
@@ -76,6 +76,7 @@ public class PeopleListAdapter extends  RecyclerView.Adapter<PeopleListAdapter.P
         final int index = mPersonList.indexOf(person);
         mPersonList.remove(person);
         notifyItemRemoved(index);
+
     }
 
     @Override
@@ -102,7 +103,8 @@ public class PeopleListAdapter extends  RecyclerView.Adapter<PeopleListAdapter.P
 
             ButterKnife.bind(PeopleViewHolder.this, view);
             view.setOnClickListener(PeopleViewHolder.this);
-            view.setOnLongClickListener(PeopleViewHolder.this);
+            /* Uses swipe to delete instead
+            view.setOnLongClickListener(PeopleViewHolder.this); */
         }
 
         @Override
