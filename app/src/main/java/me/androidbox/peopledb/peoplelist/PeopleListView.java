@@ -3,8 +3,10 @@ package me.androidbox.peopledb.peoplelist;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +41,7 @@ public class PeopleListView extends Fragment implements
     @Inject PeopleListPresenterImp mPeopleListPresenter;
 
     @BindView(R.id.rvPeople) RecyclerView mRvPeople;
+    @BindView(R.id.tbApp) Toolbar mTbApp;
 
     private PeopleListAdapter mPeoplistAdapter;
     private Unbinder mUnbinder;
@@ -77,10 +80,17 @@ public class PeopleListView extends Fragment implements
 
         mUnbinder = ButterKnife.bind(PeopleListView.this, view);
 
+        setupToolbar();
         setupRecyclerView();
         setupSwipeToDismiss();
 
         return view;
+    }
+
+    /** Setup the toolbar */
+    private void setupToolbar() {
+        AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
+        appCompatActivity.setSupportActionBar(mTbApp);
     }
 
     /** Setup the recycler view and adapter */
@@ -189,7 +199,6 @@ public class PeopleListView extends Fragment implements
     public void insertionSuccess(Person person) {
         Timber.d("insertionSuccess");
         mPeoplistAdapter.loadPerson(person);
-        mRvPeople.invalidate();
     }
 
     @Override
