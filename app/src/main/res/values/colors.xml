@@ -6,4 +6,6 @@
     <color name="cardbackground">#009688</color>
     <color name="dialogBackground">#009688</color>
     <color name="colorHintText">#37474f</color>
+    <color name="cancelButton">#ff5252</color>
+    <color name="submitButton">#00c853</color>
 </resources>

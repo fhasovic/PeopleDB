@@ -66,8 +66,32 @@
         android:id="@+id/placeHolder"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
         android:layout_centerHorizontal="true"/>
 
+    <include
+        android:id="@+id/btnSubmit"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_below="@id/etZipCode"
+        android:layout_toStartOf="@id/placeHolder"
+        android:layout_alignParentStart="true"
+        android:clickable="true"
+        layout="@layout/buttonsubmit"/>
+
+    <include
+        android:id="@+id/btnCancel"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_below="@id/etZipCode"
+        android:layout_toEndOf="@id/placeHolder"
+        android:layout_alignParentEnd="true"
+        android:clickable="true"
+        layout="@layout/buttoncancel"/>
+
+
+    <!--
     <Button
         android:id="@+id/btnSubmit"
         android:layout_width="wrap_content"
@@ -75,7 +99,14 @@
         android:layout_below="@id/etZipCode"
         android:layout_toStartOf="@id/placeHolder"
         android:layout_alignParentStart="true"
-        android:text="@string/update"/>
+        android:textColor="@android:color/white"
+        android:textAllCaps="false"
+        android:text="@string/update"
+        android:fontFamily="sans-serif-light"
+        android:drawableStart="@drawable/check"
+        android:background="@color/submitButton"/>
+-->
+<!--
 
     <Button
         android:id="@+id/btnCancel"
@@ -84,5 +115,10 @@
         android:layout_below="@id/etZipCode"
         android:layout_toEndOf="@id/placeHolder"
         android:layout_alignParentEnd="true"
-        android:text="@string/cancel"/>
+        android:textColor="@android:color/white"
+        android:textAllCaps="false"
+        android:text="@string/cancel"
+        android:fontFamily="sans-serif-light"
+        android:background="@color/cancelButton"/>
+-->
 </RelativeLayout>
