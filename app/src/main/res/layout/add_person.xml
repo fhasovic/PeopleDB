@@ -12,6 +12,8 @@
         android:layout_height="wrap_content"
         android:hint="first name"
         android:textColor="@android:color/white"
+        android:textColorHint="@color/colorHintText"
+        android:fontFamily="sans-serif-medium"
         android:textSize="18sp"/>
 
     <EditText
@@ -21,6 +23,8 @@
         android:layout_below="@id/etFirstName"
         android:hint="last name"
         android:textColor="@android:color/white"
+        android:textColorHint="@color/colorHintText"
+        android:fontFamily="sans-serif-medium"
         android:textSize="18sp"/>
 
     <TextView
@@ -30,6 +34,8 @@
         android:layout_below="@id/etLastName"
         android:hint="Date of birth"
         android:textColor="@android:color/white"
+        android:textColorHint="@color/colorHintText"
+        android:fontFamily="sans-serif-medium"
         android:textSize="18sp"/>
 
     <EditText
@@ -39,6 +45,8 @@
         android:layout_below="@id/tvDob"
         android:inputType="phone"
         android:textColor="@android:color/white"
+        android:textColorHint="@color/colorHintText"
+        android:fontFamily="sans-serif-medium"
         android:hint="phone number"
         android:textSize="18sp"/>
 
@@ -67,7 +75,7 @@
         android:layout_below="@id/etZipCode"
         android:layout_toStartOf="@id/placeHolder"
         android:layout_alignParentStart="true"
-        android:text="Submit"/>
+        android:text="@string/submit"/>
 
     <Button
         android:id="@+id/btnCancel"
@@ -76,5 +84,5 @@
         android:layout_below="@id/etZipCode"
         android:layout_toEndOf="@id/placeHolder"
         android:layout_alignParentEnd="true"
-        android:text="Cancel"/>
+        android:text="@string/cancel"/>
 </RelativeLayout>
