@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -43,7 +44,7 @@ public class PeopleListAdapter extends  RecyclerView.Adapter<PeopleListAdapter.P
     public void loadAllPersons(List<Person> persons) {
         Timber.d("loadPersonData %s", persons);
         mPersonList.addAll(persons);
-        notifyItemRangeInserted(0, persons.size());
+        notifyDataSetChanged();
     }
 
     /** Get profile from the list */
@@ -56,6 +57,7 @@ public class PeopleListAdapter extends  RecyclerView.Adapter<PeopleListAdapter.P
         if(!mPersonList.isEmpty()) {
             Timber.d("clearAdapter %d to clear out", mPersonList.size());
             mPersonList.clear();
+            notifyDataSetChanged();
         }
     }
     /** Load profile into the adapter */
@@ -73,10 +75,14 @@ public class PeopleListAdapter extends  RecyclerView.Adapter<PeopleListAdapter.P
 
     /** Filter the adapter based on the query */
     public void filterQuery(String query) {
-        for(Person person : mPersonList) {
+        Iterator<Person> iterator = mPersonList.iterator();
+
+        while(iterator.hasNext()) {
+            Person person = iterator.next();
             if(person.getFirstName().equalsIgnoreCase(query)) {
                 clearAdapter();
-                mPersonList.add(person);
+                loadPerson(person);
+                break;
             }
         }
     }

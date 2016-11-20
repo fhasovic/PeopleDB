@@ -1,10 +1,10 @@
 package me.androidbox.peopledb.peoplelist;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.os.Bundle;
-import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -47,6 +47,7 @@ public class PeopleListView extends Fragment implements
 
     @BindView(R.id.rvPeople) RecyclerView mRvPeople;
     @BindView(R.id.tbApp) Toolbar mTbApp;
+    @BindView(R.id.swipeRefresh) SwipeRefreshLayout mSwipeRefresh;
 
     private PeopleListAdapter mPeoplistAdapter;
     private Unbinder mUnbinder;
@@ -89,8 +90,31 @@ public class PeopleListView extends Fragment implements
         setupToolbar();
         setupRecyclerView();
         setupSwipeToDismiss();
+        setupSwipeRefresh();
 
         return view;
+    }
+
+    /** Refresh the data by reloading the data from the database */
+    private void setupSwipeRefresh() {
+        mSwipeRefresh.setColorSchemeResources(
+                android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
+        mSwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if(mPeoplistAdapter.getItemCount() > 0) {
+                    mPeoplistAdapter.clearAdapter();
+                    mPeopleListPresenter.loadPersons();
+                }
+                else {
+                    mSwipeRefresh.setRefreshing(false);
+                }
+            }
+        });
     }
 
     /** Setup the toolbar */
@@ -166,8 +190,6 @@ public class PeopleListView extends Fragment implements
         final Person person = mPeoplistAdapter.getPerson(position);
         Timber.d("onPersonSelected: %s", person.getFirstName());
 
-    //    mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-
         Bundle bundle = new Bundle(1);
         bundle.putParcelable(UpdatePersonDialog.PERSONUPDATE_KEY, Parcels.wrap(person));
         FragmentManager fragmentManager = getFragmentManager();
@@ -238,6 +260,10 @@ public class PeopleListView extends Fragment implements
 
         mPeoplistAdapter.clearAdapter();
         mPeoplistAdapter.loadAllPersons(personList);
+
+        if(mSwipeRefresh.isRefreshing()) {
+            mSwipeRefresh.setRefreshing(false);
+        }
     }
 
     @Override
