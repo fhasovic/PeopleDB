@@ -76,7 +76,6 @@ public class PeopleListAdapter extends  RecyclerView.Adapter<PeopleListAdapter.P
         final int index = mPersonList.indexOf(person);
         mPersonList.remove(person);
         notifyItemRemoved(index);
-
     }
 
     @Override

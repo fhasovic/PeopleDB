@@ -2,17 +2,20 @@ package me.androidbox.peopledb.peoplelist;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.os.Bundle;
-
+import android.support.v4.app.DialogFragment;
 import java.util.Calendar;
 
 /**
  * Created by steve on 10/31/16.
  */
 
-public class DatePicker extends DialogFragment  {
+public class DatePicker extends DialogFragment {
     public DatePicker() {
+    }
+
+    public static DatePicker newInstance() {
+        return new DatePicker();
     }
 
     @Override

@@ -1,8 +1,9 @@
 package me.androidbox.peopledb.peoplelist;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,7 +24,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import io.realm.RealmResults;
 import me.androidbox.peopledb.R;
 import me.androidbox.peopledb.di.DaggerInjector;
 import me.androidbox.peopledb.model.Person;
@@ -42,8 +42,10 @@ public class PeopleListView extends Fragment implements
 
     @BindView(R.id.rvPeople) RecyclerView mRvPeople;
     @BindView(R.id.tbApp) Toolbar mTbApp;
+    // @BindView(R.id.bottomSheet) View mBottomSheet;
 
     private PeopleListAdapter mPeoplistAdapter;
+    private BottomSheetBehavior mBottomSheetBehavior;
     private Unbinder mUnbinder;
     private String mFirstName;
     private String mLastName;
@@ -160,6 +162,8 @@ public class PeopleListView extends Fragment implements
         final Person person = mPeoplistAdapter.getPerson(position);
         Timber.d("onPersonSelected: %s", person.getFirstName());
 
+    //    mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
         Bundle bundle = new Bundle(1);
         bundle.putParcelable(UpdatePersonDialog.PERSONUPDATE_KEY, Parcels.wrap(person));
         FragmentManager fragmentManager = getFragmentManager();
@@ -177,7 +181,7 @@ public class PeopleListView extends Fragment implements
     @SuppressWarnings("unused")
     @OnClick(R.id.fabAddPerson)
     public void addNewPerson() {
-        android.app.FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getFragmentManager();
         AddPersonDialog addPersonDialog = AddPersonDialog.newInstance();
         addPersonDialog.setTargetFragment(PeopleListView.this, 100);
         addPersonDialog.show(fragmentManager, "addpersondialog");
