@@ -4,12 +4,17 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetBehavior;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -42,10 +47,8 @@ public class PeopleListView extends Fragment implements
 
     @BindView(R.id.rvPeople) RecyclerView mRvPeople;
     @BindView(R.id.tbApp) Toolbar mTbApp;
-    // @BindView(R.id.bottomSheet) View mBottomSheet;
 
     private PeopleListAdapter mPeoplistAdapter;
-    private BottomSheetBehavior mBottomSheetBehavior;
     private Unbinder mUnbinder;
     private String mFirstName;
     private String mLastName;
@@ -64,6 +67,7 @@ public class PeopleListView extends Fragment implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
 
         /* presenter --> activity */
     }
@@ -234,6 +238,34 @@ public class PeopleListView extends Fragment implements
 
         mPeoplistAdapter.clearAdapter();
         mPeoplistAdapter.loadAllPersons(personList);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.main, menu);
+
+        final MenuItem searchItem = menu.findItem(R.id.action_search);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Timber.d("onQueryTextSubmit: %s", query);
+
+                mPeoplistAdapter.filterQuery(query);
+
+                searchView.clearFocus();
+                searchView.setQuery("", false);
+                searchView.setIconified(true);
+                searchItem.collapseActionView();
+
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
     }
 
     @Override

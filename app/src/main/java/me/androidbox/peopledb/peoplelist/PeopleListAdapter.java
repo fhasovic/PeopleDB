@@ -71,6 +71,16 @@ public class PeopleListAdapter extends  RecyclerView.Adapter<PeopleListAdapter.P
         notifyItemChanged(index);
     }
 
+    /** Filter the adapter based on the query */
+    public void filterQuery(String query) {
+        for(Person person : mPersonList) {
+            if(person.getFirstName().equalsIgnoreCase(query)) {
+                clearAdapter();
+                mPersonList.add(person);
+            }
+        }
+    }
+
     /** void deletePerson */
     public void removePerson(Person person) {
         final int index = mPersonList.indexOf(person);
