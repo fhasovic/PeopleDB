@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.parceler.transfuse.annotations.Bind;
+
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -98,6 +100,9 @@ public class PeopleListAdapter extends  RecyclerView.Adapter<PeopleListAdapter.P
     public void onBindViewHolder(PeopleViewHolder holder, int position) {
         holder.mTvFirstName.setText(mPersonList.get(position).getFirstName());
         holder.mTvLastName.setText(mPersonList.get(position).getLastName());
+        holder.mTvDob.setText(mPersonList.get(position).getDob());
+        holder.mTvPhoneNumber.setText(mPersonList.get(position).getPhoneNumber());
+        holder.mTvZipCode.setText(mPersonList.get(position).getZip());
     }
 
     @Override
@@ -112,6 +117,9 @@ public class PeopleListAdapter extends  RecyclerView.Adapter<PeopleListAdapter.P
         @BindView(R.id.ivThumbnail) ImageView mIvThumbnail;
         @BindView(R.id.tvFirstName) TextView mTvFirstName;
         @BindView(R.id.tvLastName) TextView mTvLastName;
+        @BindView(R.id.tvDob) TextView mTvDob;
+        @BindView(R.id.tvPhoneNumber) TextView mTvPhoneNumber;
+        @BindView(R.id.tvZipCode) TextView mTvZipCode;
 
         public PeopleViewHolder(View view) {
             super(view);
@@ -132,7 +140,7 @@ public class PeopleListAdapter extends  RecyclerView.Adapter<PeopleListAdapter.P
         @Override
         public boolean onLongClick(View view) {
             if(mPersonSelectedListener != null) {
-                mPersonSelectedListener.onDeletePersonSelected(getAdapterPosition());
+        //        mPersonSelectedListener.onDeletePersonSelected(getAdapterPosition());
             }
             return true;
         }

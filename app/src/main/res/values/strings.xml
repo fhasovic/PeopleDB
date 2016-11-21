@@ -8,4 +8,9 @@
     <string name="update">Update</string>
     <string name="submit">Submit</string>
     <string name="search">Search</string>
+    <string name="first_name">first name</string>
+    <string name="last_name">last name</string>
+    <string name="date_of_birth">Date of birth</string>
+    <string name="phone_number">phone number</string>
+    <string name="zip_code">Zip code</string>
 </resources>

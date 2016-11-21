@@ -69,15 +69,10 @@ public class UpdatePersonDialog extends BottomSheetDialogFragment implements Dat
 
         if(getArguments() != null) {
             Bundle bundle = getArguments();
-            if(bundle != null) {
-                mPerson = Parcels.unwrap(bundle.getParcelable(PERSONUPDATE_KEY));
-                if (mPerson != null) {
-                    Timber.d("profile: %s", mPerson.getFirstName());
-                    populatePersonFields();
-                }
-            }
-            else {
-                Timber.e("Bundle == null");
+            mPerson = Parcels.unwrap(bundle.getParcelable(PERSONUPDATE_KEY));
+            if (mPerson != null) {
+                Timber.d("profile: %s", mPerson.getFirstName());
+                populatePersonFields();
             }
         }
         else {

@@ -190,7 +190,7 @@ public class PeopleListView extends Fragment implements
         final Person person = mPeoplistAdapter.getPerson(position);
         Timber.d("onPersonSelected: %s", person.getFirstName());
 
-        Bundle bundle = new Bundle(1);
+        Bundle bundle = new Bundle();
         bundle.putParcelable(UpdatePersonDialog.PERSONUPDATE_KEY, Parcels.wrap(person));
         FragmentManager fragmentManager = getFragmentManager();
         UpdatePersonDialog updatePersonDialog = UpdatePersonDialog.newInstance(bundle);
