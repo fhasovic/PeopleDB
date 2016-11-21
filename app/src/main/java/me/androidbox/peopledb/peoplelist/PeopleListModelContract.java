@@ -1,6 +1,8 @@
 package me.androidbox.peopledb.peoplelist;
 
 import java.util.List;
+
+import io.realm.RealmResults;
 import me.androidbox.peopledb.model.Person;
 
 /**
@@ -21,7 +23,7 @@ public interface PeopleListModelContract {
     }
     void updatePerson(Person person, UpdateDBListener updateDBListener);
 
-    /** Delete an existing person in the database */
+    /** Delete an existing profile in the database */
     interface DeleteListener {
         void onDeleteSuccess(Person person);
         void onDeleteFailure(String errMessage);

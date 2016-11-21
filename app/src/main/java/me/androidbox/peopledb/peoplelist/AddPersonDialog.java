@@ -1,7 +1,7 @@
 package me.androidbox.peopledb.peoplelist;
 
 import android.app.DatePickerDialog;
-import android.app.DialogFragment;
+import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -53,7 +53,7 @@ public class AddPersonDialog extends DialogFragment implements DatePickerDialog.
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.add_person, container, false);
+        final View view = inflater.inflate(R.layout.submit_person, container, false);
         ButterKnife.bind(AddPersonDialog.this, view);
 
         /* Cannot disable from touching outside */
@@ -81,8 +81,8 @@ public class AddPersonDialog extends DialogFragment implements DatePickerDialog.
         listener.onAddPerson(
                 mEtFirstName.getText().toString(),
                 mEtLastName.getText().toString(),
-                mEtPhoneNumber.getText().toString(),
                 mTvDob.getText().toString(),
+                mEtPhoneNumber.getText().toString(),
                 mEtZipCode.getText().toString());
 
         dismiss();

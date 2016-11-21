@@ -1,6 +1,7 @@
 package me.androidbox.peopledb.peoplelist;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.inject.Inject;
 
@@ -47,6 +48,7 @@ public class PeopleListPresenterImp implements
     @Override
     public void insertPerson() {
         Person person = new Person();
+        person.setId(UUID.randomUUID().toString());
         person.setFirstName(mPeopleView.getFirstName());
         person.setLastName(mPeopleView.getLastName());
         person.setPhoneNumber(mPeopleView.getPhoneNumber());

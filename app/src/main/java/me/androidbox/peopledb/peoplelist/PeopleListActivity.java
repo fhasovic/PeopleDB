@@ -1,6 +1,6 @@
 package me.androidbox.peopledb.peoplelist;
 
-import android.app.FragmentTransaction;
+import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
@@ -14,7 +14,7 @@ public class PeopleListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_people);
 
         if(savedInstanceState == null) {
-            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.add(R.id.activity_people_container, PeopleListView.getNewInstance(), "peopleview");
             fragmentTransaction.commit();
         }

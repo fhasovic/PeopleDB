@@ -41,13 +41,13 @@ public class PeopleListModelImp implements PeopleListModelContract {
         }, new Realm.Transaction.OnSuccess() {
             @Override
             public void onSuccess() {
-                Timber.d("onSuccess to delete person");
+                Timber.d("onSuccess to delete profile");
                 deleteListener.onDeleteSuccess(person);
             }
         }, new Realm.Transaction.OnError() {
             @Override
             public void onError(Throwable error) {
-                Timber.d(error, "onError to delete person");
+                Timber.d(error, "onError to delete profile");
                 deleteListener.onDeleteFailure(error.getMessage());
             }
         });
@@ -59,12 +59,7 @@ public class PeopleListModelImp implements PeopleListModelContract {
         mRealm.executeTransactionAsync(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                Person personObject = realm.createObject(Person.class, UUID.randomUUID().toString());
-                personObject.setFirstName(person.getFirstName());
-                personObject.setLastName(person.getLastName());
-                personObject.setDob(person.getDob());
-                personObject.setZip(person.getZip());
-                personObject.setPhoneNumber(person.getPhoneNumber());
+                realm.copyToRealm(person);
             }
         }, new Realm.Transaction.OnSuccess() {
             @Override
@@ -97,7 +92,7 @@ public class PeopleListModelImp implements PeopleListModelContract {
         }, new Realm.Transaction.OnError() {
             @Override
             public void onError(Throwable error) {
-                Timber.e(error, "Failed to update person");
+                Timber.e(error, "Failed to update profile");
                 updateDBListener.onUpdateFailure(error.getMessage());
             }
         });
@@ -106,12 +101,13 @@ public class PeopleListModelImp implements PeopleListModelContract {
     @Override
     public void loadPersons(final LoadPersonListener loadPersonListener) {
         if(mRealm.isClosed()) {
+            Timber.d("loadPersons mRealm is closed");
             mRealm = Realm.getDefaultInstance();
         }
 
         RealmResults<Person> personsList = mRealm.where(Person.class).findAll();
         if(personsList.size() > 0) {
-            loadPersonListener.onLoadPersonSuccess(personsList);
+            loadPersonListener.onLoadPersonSuccess(mRealm.copyFromRealm(personsList));
         }
         else {
             loadPersonListener.onLoadPersonFailure("No items in the database");

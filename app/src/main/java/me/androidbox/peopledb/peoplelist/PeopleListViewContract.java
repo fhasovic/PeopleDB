@@ -2,6 +2,7 @@ package me.androidbox.peopledb.peoplelist;
 
 import java.util.List;
 
+import io.realm.RealmResults;
 import me.androidbox.peopledb.model.Person;
 
 /**

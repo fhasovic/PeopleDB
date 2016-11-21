@@ -1,28 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:cardview="http://schemas.android.com/apk/res-auto"
+    cardview:cardBackgroundColor="@color/cardbackground"
+    cardview:cardCornerRadius="2dp"
+    cardview:cardElevation="6dp"
+    android:layout_marginEnd="4dp"
+    android:layout_marginStart="4dp"
+    android:layout_marginTop="4dp">
 
-    <ImageView
-        android:id="@+id/ivThumbnail"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@mipmap/ic_launcher"
-        android:scaleType="centerCrop"
-        android:adjustViewBounds="true"/>
-
-    <TextView
-        android:id="@+id/tvFirstName"
+    <RelativeLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/ivThumbnail"/>
+        android:layout_height="match_parent"
+        android:padding="4dp">
 
-    <TextView
-        android:id="@+id/tvLastName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/ivThumbnail"
-        android:layout_below="@id/tvFirstName"/>
+        <TextView
+            android:id="@+id/tvFirstName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:text="Steve"
+            android:textSize="26sp"
+            android:fontFamily="sans-serif-light"
+            android:textColor="@android:color/white"/>
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/tvLastName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_toEndOf="@id/tvFirstName"
+            android:text="Mason"
+            android:textSize="26sp"
+            android:fontFamily="sans-serif-light"
+            android:textColor="@android:color/white"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/tvFirstName"
+            android:src="@drawable/ic_today_black_24dp"/>
+
+        <TextView
+            android:id="@+id/tvDob"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="48dp"
+            android:layout_below="@id/tvFirstName"
+            android:text="28 Nov 2012"
+            android:textSize="18sp"
+            android:fontFamily="sans-serif-condensed"
+            android:textColor="@android:color/white"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/tvDob"
+            android:src="@drawable/ic_phone_black_24dp"/>
+
+        <TextView
+            android:id="@+id/tvPhoneNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="48dp"
+            android:layout_below="@id/tvDob"
+            android:text="9292809349"
+            android:textSize="18sp"
+            android:fontFamily="sans-serif-condensed"
+            android:textColor="@android:color/white"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/tvPhoneNumber"
+            android:src="@drawable/ic_location_on_black_24dp"/>
+
+        <TextView
+            android:id="@+id/tvZipCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="48dp"
+            android:layout_below="@id/tvPhoneNumber"
+            android:text="06045"
+            android:textSize="18sp"
+            android:fontFamily="sans-serif-condensed"
+            android:textColor="@android:color/white"/>
+
+        <ImageView
+            android:id="@+id/ivThumbnail"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/profile"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true" />
+
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

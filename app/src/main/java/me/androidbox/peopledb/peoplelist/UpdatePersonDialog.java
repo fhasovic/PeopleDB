@@ -1,9 +1,11 @@
 package me.androidbox.peopledb.peoplelist;
 
 import android.app.DatePickerDialog;
-import android.app.DialogFragment;
+import android.support.v4.app.DialogFragment;
+
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetDialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +29,7 @@ import timber.log.Timber;
  * Created by steve on 11/1/16.
  */
 
-public class UpdatePersonDialog extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+public class UpdatePersonDialog extends BottomSheetDialogFragment implements DatePickerDialog.OnDateSetListener {
     public interface UpdatePersonListener {
         void onUpdatePerson(Person person);
     }
@@ -67,15 +69,10 @@ public class UpdatePersonDialog extends DialogFragment implements DatePickerDial
 
         if(getArguments() != null) {
             Bundle bundle = getArguments();
-            if(bundle != null) {
-                mPerson = Parcels.unwrap(bundle.getParcelable(PERSONUPDATE_KEY));
-                if (mPerson != null) {
-                    Timber.d("person: %s", mPerson.getFirstName());
-                    populatePersonFields();
-                }
-            }
-            else {
-                Timber.e("Bundle == null");
+            mPerson = Parcels.unwrap(bundle.getParcelable(PERSONUPDATE_KEY));
+            if (mPerson != null) {
+                Timber.d("profile: %s", mPerson.getFirstName());
+                populatePersonFields();
             }
         }
         else {
@@ -97,7 +94,7 @@ public class UpdatePersonDialog extends DialogFragment implements DatePickerDial
         mEtZipCode.setText(mPerson.getZip());
     }
 
-    /** Populate person with updated fields */
+    /** Populate profile with updated fields */
     private void updatePerson() {
         mPerson.setFirstName(mEtFirstName.getText().toString());
         mPerson.setLastName(mEtLastName.getText().toString());
@@ -114,7 +111,7 @@ public class UpdatePersonDialog extends DialogFragment implements DatePickerDial
     @SuppressWarnings("unused")
     @OnClick(R.id.tvDob)
     public void enterDate() {
-        DialogFragment newFragment = new DatePicker();
+        DialogFragment newFragment = DatePicker.newInstance();
         newFragment.setTargetFragment(UpdatePersonDialog.this, 0);
         newFragment.show(getFragmentManager(), "datepicker");
     }

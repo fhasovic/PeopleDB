@@ -1,12 +1,20 @@
 package me.androidbox.peopledb.peoplelist;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -38,6 +46,8 @@ public class PeopleListView extends Fragment implements
     @Inject PeopleListPresenterImp mPeopleListPresenter;
 
     @BindView(R.id.rvPeople) RecyclerView mRvPeople;
+    @BindView(R.id.tbApp) Toolbar mTbApp;
+    @BindView(R.id.swipeRefresh) SwipeRefreshLayout mSwipeRefresh;
 
     private PeopleListAdapter mPeoplistAdapter;
     private Unbinder mUnbinder;
@@ -58,6 +68,7 @@ public class PeopleListView extends Fragment implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
 
         /* presenter --> activity */
     }
@@ -76,10 +87,40 @@ public class PeopleListView extends Fragment implements
 
         mUnbinder = ButterKnife.bind(PeopleListView.this, view);
 
+        setupToolbar();
         setupRecyclerView();
         setupSwipeToDismiss();
+        setupSwipeRefresh();
 
         return view;
+    }
+
+    /** Refresh the data by reloading the data from the database */
+    private void setupSwipeRefresh() {
+        mSwipeRefresh.setColorSchemeResources(
+                android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
+        mSwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if(mPeoplistAdapter.getItemCount() > 0) {
+                    mPeoplistAdapter.clearAdapter();
+                    mPeopleListPresenter.loadPersons();
+                }
+                else {
+                    mSwipeRefresh.setRefreshing(false);
+                }
+            }
+        });
+    }
+
+    /** Setup the toolbar */
+    private void setupToolbar() {
+        AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
+        appCompatActivity.setSupportActionBar(mTbApp);
     }
 
     /** Setup the recycler view and adapter */
@@ -144,12 +185,12 @@ public class PeopleListView extends Fragment implements
     }
 
     @Override
-    public void onPersonSelected(int position) {
-        /* Get the person from the list */
+    public void onUpdatePersonSelected(int position) {
+        /* Get the profile from the list */
         final Person person = mPeoplistAdapter.getPerson(position);
         Timber.d("onPersonSelected: %s", person.getFirstName());
 
-        Bundle bundle = new Bundle(1);
+        Bundle bundle = new Bundle();
         bundle.putParcelable(UpdatePersonDialog.PERSONUPDATE_KEY, Parcels.wrap(person));
         FragmentManager fragmentManager = getFragmentManager();
         UpdatePersonDialog updatePersonDialog = UpdatePersonDialog.newInstance(bundle);
@@ -157,10 +198,16 @@ public class PeopleListView extends Fragment implements
         updatePersonDialog.show(fragmentManager, "updatepersondialog");
     }
 
+    @Override
+    public void onDeletePersonSelected(int position) {
+        final Person person = mPeoplistAdapter.getPerson(position);
+        mPeopleListPresenter.deletePersons(person);
+    }
+
     @SuppressWarnings("unused")
     @OnClick(R.id.fabAddPerson)
     public void addNewPerson() {
-        android.app.FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getFragmentManager();
         AddPersonDialog addPersonDialog = AddPersonDialog.newInstance();
         addPersonDialog.setTargetFragment(PeopleListView.this, 100);
         addPersonDialog.show(fragmentManager, "addpersondialog");
@@ -210,17 +257,46 @@ public class PeopleListView extends Fragment implements
     @Override
     public void loadSuccess(List<Person> personList) {
         Timber.d("loadSuccess: %d", personList.size());
+
         mPeoplistAdapter.clearAdapter();
         mPeoplistAdapter.loadAllPersons(personList);
 
-        for(Person person : personList) {
-            Timber.d("UUID: %s", person.getFirstName());
+        if(mSwipeRefresh.isRefreshing()) {
+            mSwipeRefresh.setRefreshing(false);
         }
     }
 
     @Override
-    public void loadFailure() {
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.main, menu);
 
+        final MenuItem searchItem = menu.findItem(R.id.action_search);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Timber.d("onQueryTextSubmit: %s", query);
+
+                mPeoplistAdapter.filterQuery(query);
+
+                searchView.clearFocus();
+                searchView.setQuery("", false);
+                searchView.setIconified(true);
+                searchItem.collapseActionView();
+
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+    }
+
+    @Override
+    public void loadFailure() {
+        Timber.e("loadFailure");
     }
 
     @Override
